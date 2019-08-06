@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\caching\TagDependency;
 
 /**
  * This is the model class for table "{{%pages}}".
@@ -68,5 +69,25 @@ class Pages extends \yii\db\ActiveRecord
             'description' => Yii::t('app', 'Description'),
             'is_active' => Yii::t('app', 'Active')
         ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        TagDependency::invalidate(Yii::$app->cache, 'pages');
+        
+        return parent::afterSave($insert, $changedAttributes);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        TagDependency::invalidate(Yii::$app->cache, 'pages');
+        
+        parent::afterDelete();
     }
 }

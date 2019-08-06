@@ -14,6 +14,7 @@ use app\components\LogTraffic;
 use app\models\Pages;
 use yii\web\NotFoundHttpException;
 use app\components\ProductGridWidget;
+use yii\caching\TagDependency;
 
 class SiteController extends Controller
 {
@@ -80,14 +81,16 @@ class SiteController extends Controller
      */
     public function actionPage($slug)
     {
-        if (!$model = Pages::findOne(['slug' => $slug])) {
-            throw new NotFoundHttpException(Yii::t('app', 'Page not found.'));
-        }
-        $model->content = preg_replace_callback('/{{product (\d+)}}/i', function ($matches) {
-            return ProductGridWidget::widget(['product_id' => $matches[1]]);
-        }, $model->content);
-        
-        return $this->render('page', ['model' => $model]);
+        return $this->render('page', ['model' => Yii::$app->cache->getOrSet('page_' . $slug, function() use ($slug){
+            if (!$model = Pages::findOne(['slug' => $slug])) {
+                throw new NotFoundHttpException(Yii::t('app', 'Page not found.'));
+            }
+            $model->content = preg_replace_callback('/{{product (\d+)}}/i', function ($matches) {
+                return ProductGridWidget::widget(['product_id' => $matches[1]]);
+            }, $model->content);
+            
+            return $model;
+        }, 0, new TagDependency(['tags' => 'pages']))]);
     }
 
     /**
