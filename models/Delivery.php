@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "delivery".
@@ -49,5 +50,13 @@ class Delivery extends \yii\db\ActiveRecord
             'free_sum' => Yii::t('app', 'Free shipping sum'),
             'is_active' => Yii::t('app', 'Active')
         ];
+    }
+    
+    /**
+     * List of all deliveries
+     */
+    public static function getAll()
+    {
+        return ArrayHelper::map(self::find()->select(['id', 'name'])->where(['is_active' => 1])->asArray()->orderBy('name ASC')->all(), 'id', 'name');
     }
 }

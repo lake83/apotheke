@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "payment".
@@ -46,5 +47,13 @@ class Payment extends \yii\db\ActiveRecord
             'image' => Yii::t('app', 'Image'),
             'is_active' => Yii::t('app', 'Active')
         ];
+    }
+    
+    /**
+     * List of all payments
+     */
+    public static function getAll()
+    {
+        return ArrayHelper::map(self::find()->select(['id', 'name'])->where(['is_active' => 1])->asArray()->orderBy('name ASC')->all(), 'id', 'name');
     }
 }

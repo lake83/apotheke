@@ -4,7 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\SluggableBehavior;
-use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "products".
@@ -13,11 +13,7 @@ use yii\helpers\Json;
  * @property string $name
  * @property string $slug
  * @property string $image
- * @property string $full_text
  * @property int $position
- * @property string $title
- * @property string $keywords
- * @property string $description
  * @property int $is_active
  */
 class Products extends \yii\db\ActiveRecord
@@ -51,9 +47,9 @@ class Products extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['image', 'full_text', 'description'], 'string'],
+            [['image'], 'string'],
             [['position', 'is_active'], 'integer'],
-            [['name', 'slug', 'title', 'keywords'], 'string', 'max' => 255],
+            [['name', 'slug'], 'string', 'max' => 255],
             ['image', 'safe']
         ];
     }
@@ -68,11 +64,7 @@ class Products extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name'),
             'slug' => Yii::t('app', 'Alias'),
             'image' => Yii::t('app', 'Image'),
-            'full_text' => Yii::t('app', 'Text'),
             'position' => Yii::t('app', 'Position'),
-            'title' => Yii::t('app', 'Title'),
-            'keywords' => Yii::t('app', 'Keywords'),
-            'description' => Yii::t('app', 'Description'),
             'is_active' => Yii::t('app', 'Active')
         ];
     }
@@ -83,5 +75,13 @@ class Products extends \yii\db\ActiveRecord
     public function getProductsPrices()
     {
         return $this->hasMany(ProductsPrice::className(), ['product_id' => 'id']);
+    }
+    
+    /**
+     * List of all products
+     */
+    public static function getAll()
+    {
+        return ArrayHelper::map(self::find()->select(['id', 'name'])->where(['is_active' => 1])->asArray()->orderBy('name ASC')->all(), 'id', 'name');
     }
 }

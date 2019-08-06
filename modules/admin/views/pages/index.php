@@ -8,10 +8,10 @@ use app\components\SiteHelper;
 /* @var $searchModel app\models\PagesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Страницы';
+$this->title = Yii::t('app', 'Pages');
 ?>
 
-<p><?= Html::a('Создать страницу', ['create'], ['class' => 'btn btn-success']) ?></p>
+<p><?= Html::a(Yii::t('app', 'Create page'), ['create'], ['class' => 'btn btn-success']) ?></p>
 
 <?=  GridView::widget([
     'layout' => '{items}{pager}',

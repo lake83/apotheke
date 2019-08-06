@@ -64,7 +64,7 @@ class Traffic extends \yii\db\ActiveRecord
             'id' => 'ID',
             'host' => Yii::t('app', 'Host'),
             'referrer' => Yii::t('app', 'Referrer'),
-            'ip' => Yii::t('app', 'Ip'),
+            'ip' => 'IP',
             'agent' => Yii::t('app', 'Agent'),
             'cookie_id' => Yii::t('app', 'Cookie ID'),
             'language' => Yii::t('app', 'Language'),

@@ -1,6 +1,7 @@
 <?php
 $config = [
     'id' => 'basic',
+    'name' => 'Apotheke',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['app\config\settings'],
     'language' => 'en',

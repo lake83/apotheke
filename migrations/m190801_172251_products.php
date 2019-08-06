@@ -19,11 +19,7 @@ class m190801_172251_products extends Migration
             'name' => $this->string()->notNull(),
             'slug' => $this->string()->notNull(),
             'image' => $this->text()->notNull(),
-            'full_text' => $this->text()->notNull(),
             'position' => $this->integer()->defaultValue(null),
-            'title' => $this->string()->notNull(),
-            'keywords' => $this->string()->notNull(),
-            'description' => $this->text()->notNull(),
             'is_active' => $this->boolean()->defaultValue(1)
         ], $tableOptions);
         
