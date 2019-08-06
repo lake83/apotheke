@@ -48,10 +48,12 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                ['pattern' => '<slug>', 'route' => 'site/page', 'suffix' => '.html'],
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 '<action:\w+>/<id:\d+>' => 'site/<action>',
                 '' => 'site/index',
-                '<action>'=>'site/<action>'
+                '<action>' => 'site/<action>'
+                
             ]
 
         ],

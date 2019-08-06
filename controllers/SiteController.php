@@ -11,6 +11,9 @@ use app\models\ContactForm;
 use app\models\User;
 use app\components\SiteHelper;
 use app\components\LogTraffic;
+use app\models\Pages;
+use yii\web\NotFoundHttpException;
+use app\components\ProductGridWidget;
 
 class SiteController extends Controller
 {
@@ -68,6 +71,23 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+    
+    /**
+     * Displays content pages
+     *
+     * @return string
+     */
+    public function actionPage($slug)
+    {
+        if (!$model = Pages::findOne(['slug' => $slug])) {
+            throw new NotFoundHttpException(Yii::t('app', 'Page not found.'));
+        }
+        $model->content = preg_replace_callback('/{{product (\d+)}}/i', function ($matches) {
+            return ProductGridWidget::widget(['product_id' => $matches[1]]);
+        }, $model->content);
+        
+        return $this->render('page', ['model' => $model]);
     }
 
     /**

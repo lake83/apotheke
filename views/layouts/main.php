@@ -6,10 +6,15 @@
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\models\Pages;
 
 AppAsset::register($this);
+
+$menu_items = [];
+foreach (Pages::find()->select(['name', 'slug'])->where(['is_active' => 1])->orderBy('name ASC')->asArray()->all() as $link) {
+    $menu_items[] = ['label' => $link['name'], 'url' => ['site/page', 'slug' => $link['slug']]];
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -57,10 +62,12 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= $content ?>
+        <div class="col-md-3">
+            <?= Nav::widget(['items' => $menu_items]) ?>
+        </div>
+        <div class="col-md-9">
+            <?= $content ?>
+        </div>
     </div>
 </div>
 
