@@ -17,7 +17,7 @@ class PagesSearch extends Pages
     public function rules()
     {
         return [
-            [['id', 'is_active'], 'integer'],
+            [['id', 'position', 'is_active'], 'integer'],
             [['name', 'slug', 'content', 'title', 'keywords', 'description'], 'safe']
         ];
     }
@@ -52,6 +52,7 @@ class PagesSearch extends Pages
         }
         $query->andFilterWhere([
             'id' => $this->id,
+            'position' => $this->position,
             'is_active' => $this->is_active,
         ]);
         $query->andFilterWhere(['like', 'name', $this->name])

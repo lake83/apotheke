@@ -12,7 +12,7 @@ use app\models\Pages;
 AppAsset::register($this);
 
 $menu_items = [];
-foreach (Pages::find()->select(['name', 'slug'])->where(['is_active' => 1])->orderBy('name ASC')->asArray()->all() as $link) {
+foreach (Pages::find()->select(['name', 'slug'])->where(['is_active' => 1])->orderBy('position ASC')->asArray()->all() as $link) {
     $menu_items[] = ['label' => $link['name'], 'url' => ['site/page', 'slug' => $link['slug']]];
 }
 ?>

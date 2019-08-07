@@ -14,6 +14,8 @@ $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
     <?= $form->field($model, 'slug')->textInput(['maxlength' => true])->hint(Yii::t('app', 'Generated from name.')) ?>
 
     <?= $form->field($model, 'content')->widget(\app\components\RedactorTinymce::className()) ?>
+    
+    <?= $form->field($model, 'position')->textInput() ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 

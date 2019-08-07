@@ -9,4 +9,15 @@ class OrdersController extends AdminController
 {
     public $modelClass = 'app\models\Orders';
     public $searchModelClass = 'app\models\OrdersSearch';
+    
+    public function actions()
+    {
+        $actions = parent::actions();
+        
+        $actions['view'] = [
+            'class' => 'app\modules\admin\controllers\actions\View',
+            'model' => $this->modelClass
+        ];
+        return $actions;
+    }
 }

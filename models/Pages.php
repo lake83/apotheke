@@ -12,6 +12,7 @@ use yii\caching\TagDependency;
  * @property string $slug
  * @property string $name
  * @property string $content
+ * @property int $position
  * @property string $title
  * @property string $keywords
  * @property string $description
@@ -49,7 +50,7 @@ class Pages extends \yii\db\ActiveRecord
         return [
             [['name', 'content'], 'required'],
             [['content', 'description'], 'string'],
-            [['is_active'], 'integer'],
+            [['position', 'is_active'], 'integer'],
             [['name', 'slug', 'title', 'keywords'], 'string', 'max' => 255]
         ];
     }
@@ -64,6 +65,7 @@ class Pages extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name'),
             'slug' => Yii::t('app', 'Alias'),
             'content' => Yii::t('app', 'Content'),
+            'position' => Yii::t('app', 'Position'),
             'title' => Yii::t('app', 'Title'),
             'keywords' => Yii::t('app', 'Keywords'),
             'description' => Yii::t('app', 'Description'),

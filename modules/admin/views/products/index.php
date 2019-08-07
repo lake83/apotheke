@@ -31,7 +31,6 @@ $this->title = Yii::t('app', 'Products');
                 }
             ],
             'name',
-            'position',
             SiteHelper::is_active($searchModel),
 
             [

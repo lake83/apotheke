@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\behaviors\SluggableBehavior;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -11,9 +10,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property int $id
  * @property string $name
- * @property string $slug
  * @property string $image
- * @property int $position
  * @property int $is_active
  */
 class Products extends \yii\db\ActiveRecord
@@ -25,20 +22,6 @@ class Products extends \yii\db\ActiveRecord
     {
         return 'products';
     }
-    
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => SluggableBehavior::className(),
-                'attribute' => 'name',
-                'immutable' => true
-            ]
-        ];
-    }
 
     /**
      * {@inheritdoc}
@@ -46,10 +29,10 @@ class Products extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['image'], 'string'],
-            [['position', 'is_active'], 'integer'],
-            [['name', 'slug'], 'string', 'max' => 255],
+            ['name', 'required'],
+            ['image', 'string'],
+            ['is_active', 'integer'],
+            ['name', 'string', 'max' => 255],
             ['image', 'safe']
         ];
     }
@@ -62,9 +45,7 @@ class Products extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => Yii::t('app', 'Name'),
-            'slug' => Yii::t('app', 'Alias'),
             'image' => Yii::t('app', 'Image'),
-            'position' => Yii::t('app', 'Position'),
             'is_active' => Yii::t('app', 'Active')
         ];
     }

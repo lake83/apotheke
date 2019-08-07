@@ -14,6 +14,7 @@ class m190802_103751_pages extends Migration
             'name' => $this->string()->notNull(),
             'slug' => $this->string()->notNull(),
             'content' => $this->text()->notNull(),
+            'position' => $this->integer()->defaultValue(null),
             'title' => $this->string()->notNull(),
             'keywords' => $this->string()->notNull(),
             'description' => $this->text()->notNull(),

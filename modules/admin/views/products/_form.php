@@ -10,12 +10,8 @@ use yii\bootstrap\ActiveForm;
 $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'slug')->textInput(['maxlength' => true])->hint(Yii::t('app', 'Generated from the name.')) ?>
 
     <?= $form->field($model, 'image')->widget(\app\components\FilemanagerInput::className()) ?>
-
-    <?= $form->field($model, 'position')->textInput() ?>
     
     <?= $form->field($model, 'is_active')->checkbox() ?>
 

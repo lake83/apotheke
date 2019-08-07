@@ -124,6 +124,22 @@ class Orders extends \yii\db\ActiveRecord
     }
     
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDelivery()
+    {
+        return $this->hasOne(Delivery::className(), ['id' => 'delivery_id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPayment()
+    {
+        return $this->hasOne(Payment::className(), ['id' => 'payment_id']);
+    }
+    
+    /**
      * Returns a list of order statuses or name
      * 
      * @param integer $key key in an array of names

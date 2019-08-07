@@ -24,6 +24,7 @@ $this->title = Yii::t('app', 'Pages');
 
             'name',
             'slug',
+            'position',
             SiteHelper::is_active($searchModel),
 
             [

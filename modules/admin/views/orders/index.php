@@ -46,8 +46,8 @@ echo GridView::widget([
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}{delete}',
-                'options' => ['width' => '50px']
+                'template' => '{view} {update} {delete}',
+                'options' => ['width' => '70px']
             ]
         ]
     ]);
