@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\caching\TagDependency;
 
 /**
  * This is the model class for table "products_price".
@@ -57,4 +58,24 @@ class ProductsPrice extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Products::className(), ['id' => 'product_id']);
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        TagDependency::invalidate(Yii::$app->cache, 'pages');
+        
+        return parent::afterSave($insert, $changedAttributes);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        TagDependency::invalidate(Yii::$app->cache, 'pages');
+        
+        parent::afterDelete();
+    }        
 }

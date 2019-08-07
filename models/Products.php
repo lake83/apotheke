@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\caching\TagDependency;
 
 /**
  * This is the model class for table "products".
@@ -63,5 +64,25 @@ class Products extends \yii\db\ActiveRecord
     public static function getAll()
     {
         return ArrayHelper::map(self::find()->select(['id', 'name'])->where(['is_active' => 1])->asArray()->orderBy('name ASC')->all(), 'id', 'name');
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        TagDependency::invalidate(Yii::$app->cache, 'pages');
+        
+        return parent::afterSave($insert, $changedAttributes);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        TagDependency::invalidate(Yii::$app->cache, 'pages');
+        
+        parent::afterDelete();
     }
 }
