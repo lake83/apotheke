@@ -9,21 +9,29 @@ use yii\bootstrap\ActiveForm;
 
 $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?php if ($model->slug !== 'main') {
+        echo $form->field($model, 'name')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'slug')->textInput(['maxlength' => true])->hint(Yii::t('app', 'Generated from name.'));
+    } ?>
     
-    <?= $form->field($model, 'slug')->textInput(['maxlength' => true])->hint(Yii::t('app', 'Generated from name.')) ?>
+    <?php if ($model->is_product) {
+        echo $form->field($model, 'position')->textInput();
+    } ?>
+    
+    <?= $form->field($model, 'image')->widget(\app\components\FilemanagerInput::className()) ?>
 
     <?= $form->field($model, 'content')->widget(\app\components\RedactorTinymce::className()) ?>
     
-    <?= $form->field($model, 'position')->textInput() ?>
+    <?php if ($model->slug !== 'main') {
+        echo $form->field($model, 'is_product')->checkbox();
+        echo $form->field($model, 'is_active')->checkbox();
+    } ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'keywords')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'is_active')->checkbox() ?>
 
     <div class="box-footer">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -11,8 +11,10 @@ use yii\caching\TagDependency;
  * @property int $id
  * @property string $slug
  * @property string $name
+ * @property string $image
  * @property string $content
  * @property int $position
+ * @property int $is_product
  * @property string $title
  * @property string $keywords
  * @property string $description
@@ -49,9 +51,10 @@ class Pages extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'content'], 'required'],
-            [['content', 'description'], 'string'],
-            [['position', 'is_active'], 'integer'],
-            [['name', 'slug', 'title', 'keywords'], 'string', 'max' => 255]
+            [['image', 'content', 'description'], 'string'],
+            [['position', 'is_product', 'is_active'], 'integer'],
+            [['name', 'slug', 'title', 'keywords'], 'string', 'max' => 255],
+            ['image', 'safe']
         ];
     }
 
@@ -64,8 +67,10 @@ class Pages extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => Yii::t('app', 'Name'),
             'slug' => Yii::t('app', 'Alias'),
+            'image' => Yii::t('app', 'Image'),
             'content' => Yii::t('app', 'Content'),
             'position' => Yii::t('app', 'Position'),
+            'is_product' => Yii::t('app', 'Product'),
             'title' => Yii::t('app', 'Title'),
             'keywords' => Yii::t('app', 'Keywords'),
             'description' => Yii::t('app', 'Description'),

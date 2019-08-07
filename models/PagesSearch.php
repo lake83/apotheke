@@ -17,8 +17,8 @@ class PagesSearch extends Pages
     public function rules()
     {
         return [
-            [['id', 'position', 'is_active'], 'integer'],
-            [['name', 'slug', 'content', 'title', 'keywords', 'description'], 'safe']
+            [['id', 'position', 'is_active', 'is_product'], 'integer'],
+            [['name', 'slug', 'content', 'title', 'keywords', 'description', 'image'], 'safe']
         ];
     }
 
@@ -44,7 +44,6 @@ class PagesSearch extends Pages
         $dataProvider = new ActiveDataProvider([
             'query' => $query
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
@@ -53,10 +52,12 @@ class PagesSearch extends Pages
         $query->andFilterWhere([
             'id' => $this->id,
             'position' => $this->position,
-            'is_active' => $this->is_active,
+            'is_product' => $this->is_product,
+            'is_active' => $this->is_active
         ]);
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'slug', $this->slug])
+            ->andFilterWhere(['like', 'image', $this->image])
             ->andFilterWhere(['like', 'content', $this->content])
             ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'keywords', $this->keywords])

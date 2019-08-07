@@ -9,9 +9,9 @@ use yii\data\ActiveDataProvider;
 class ProductGridWidget extends Widget
 {
     /**
-     * @var integer product ID
+     * @var integer product number
      */
-    public $product_id;
+    public $number;
 
     /**
      * @inheritdoc
@@ -19,7 +19,8 @@ class ProductGridWidget extends Widget
     public function run()
     {
         return $this->render('@app/views/widget/product', ['dataProvider' => new ActiveDataProvider([
-            'query' => ProductsPrice::find()->where(['product_id' => $this->product_id])
+            'query' => ProductsPrice::find()->select(['products_price.amount', 'products_price.price'])
+                ->innerJoin('products', '`products_price`.`product_id` = `products`.`id` AND `number` IN(' . $this->number . ')')
         ])]);
     }
 }

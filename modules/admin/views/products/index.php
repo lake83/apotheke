@@ -22,14 +22,7 @@ $this->title = Yii::t('app', 'Products');
         'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
 
-            [
-                'attribute' => 'image',
-                'format' => 'raw',
-                'filter' => false,
-                'value' => function ($model, $index, $widget) {
-                    return Html::img(SiteHelper::resized_image($model->image, 120, 100), ['width' => 70]);
-                }
-            ],
+            'number',
             'name',
             SiteHelper::is_active($searchModel),
 

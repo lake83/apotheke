@@ -18,7 +18,7 @@ class ProductsSearch extends Products
     {
         return [
             [['id', 'is_active'], 'integer'],
-            [['name', 'image'], 'safe']
+            [['number', 'name'], 'safe']
         ];
     }
 
@@ -44,7 +44,6 @@ class ProductsSearch extends Products
         $dataProvider = new ActiveDataProvider([
             'query' => $query
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
@@ -54,9 +53,8 @@ class ProductsSearch extends Products
             'id' => $this->id,
             'is_active' => $this->is_active
         ]);
-
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'image', $this->image]);
+            ->andFilterWhere(['like', 'number', $this->number]);
 
         return $dataProvider;
     }

@@ -22,14 +22,28 @@ $this->title = Yii::t('app', 'Pages');
         'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
 
+            [
+                'attribute' => 'image',
+                'format' => 'raw',
+                'filter' => false,
+                'value' => function ($model, $index, $widget) {
+                    return Html::img(SiteHelper::resized_image($model->image, 120, 100), ['width' => 70]);
+                }
+            ],
             'name',
             'slug',
             'position',
+            'is_product:boolean',
             SiteHelper::is_active($searchModel),
 
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update} {delete}',
+                'visibleButtons' => [
+                    'delete' => function ($model, $key, $index) {
+                        return $model->slug !== 'main';
+                    }
+                ],
                 'options' => ['width' => '50px']
             ]
         ]

@@ -17,7 +17,7 @@ class m190801_172251_products extends Migration
         $this->createTable('products', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
-            'image' => $this->text()->notNull(),
+            'number' => $this->string(20)->notNull(),
             'is_active' => $this->boolean()->defaultValue(1)
         ], $tableOptions);
         

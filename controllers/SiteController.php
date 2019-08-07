@@ -71,7 +71,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('page', ['model' => Pages::findOne(['slug' => 'main'])]);
     }
     
     /**
@@ -85,10 +85,9 @@ class SiteController extends Controller
             if (!$model = Pages::findOne(['slug' => $slug])) {
                 throw new NotFoundHttpException(Yii::t('app', 'Page not found.'));
             }
-            $model->content = preg_replace_callback('/{{product (\d+)}}/i', function ($matches) {
-                return ProductGridWidget::widget(['product_id' => $matches[1]]);
+            $model->content = preg_replace_callback('/{{product (.*?)}}/', function ($matches) {
+                return ProductGridWidget::widget(['number' => $matches[1]]);
             }, $model->content);
-            
             return $model;
         }, 0, new TagDependency(['tags' => 'pages']))]);
     }
@@ -141,15 +140,5 @@ class SiteController extends Controller
         return $this->render('contact', [
             'model' => $model
         ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
     }
 }

@@ -11,8 +11,9 @@ use app\models\Pages;
 
 AppAsset::register($this);
 
+$slug = Yii::$app->request->get('slug');
 $menu_items = [];
-foreach (Pages::find()->select(['name', 'slug'])->where(['is_active' => 1])->orderBy('position ASC')->asArray()->all() as $link) {
+foreach (Pages::find()->select(['name', 'slug'])->where(['is_active' => 1, 'is_product' => 1])->orderBy('position ASC')->asArray()->all() as $link) {
     $menu_items[] = ['label' => $link['name'], 'url' => ['site/page', 'slug' => $link['slug']]];
 }
 ?>
@@ -30,33 +31,25 @@ foreach (Pages::find()->select(['name', 'slug'])->where(['is_active' => 1])->ord
 <?php $this->beginBody() ?>
 
 <div class="wrap">
+    <div class="header">
+    
+    </div>
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
+        'id' => 'main-menu',
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-inverse'
         ],
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
+        'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => Yii::t('app', 'Main'), 'url' => ['/site/index']],
-            ['label' => Yii::t('app', 'About'), 'url' => ['/site/about']],
-            ['label' => Yii::t('app', 'Contacts'), 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => Yii::t('app', 'Login'), 'url' => ['/admin']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    Yii::t('app', 'Logout') . ' (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
+            ['label' => 'Über uns', 'url' => ['site/page', 'slug' => 'about'], 'active' => $slug == 'about'],
+            ['label' => 'Fragen&Antworten', 'url' => ['site/page', 'slug' => 'faq'], 'active' => $slug == 'faq'],
+            ['label' => 'Kontakt', 'url' => ['site/contact']],
+            ['label' => 'Kundenerfahrungen', 'url' => ['site/page', 'slug' => 'reviews'], 'active' => $slug == 'reviews'],
+            ['label' => 'Lieferung&Bezahlung', 'url' => ['site/page', 'slug' => 'delivery-payment'], 'active' => $slug == 'delivery-payment']
+        ]
     ]);
     NavBar::end();
     ?>

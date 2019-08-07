@@ -10,7 +10,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property int $id
  * @property string $name
- * @property string $image
+ * @property string $number
  * @property int $is_active
  */
 class Products extends \yii\db\ActiveRecord
@@ -30,10 +30,9 @@ class Products extends \yii\db\ActiveRecord
     {
         return [
             ['name', 'required'],
-            ['image', 'string'],
             ['is_active', 'integer'],
-            ['name', 'string', 'max' => 255],
-            ['image', 'safe']
+            ['number', 'string', 'max' => 20],
+            ['name', 'string', 'max' => 255]
         ];
     }
 
@@ -45,7 +44,7 @@ class Products extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => Yii::t('app', 'Name'),
-            'image' => Yii::t('app', 'Image'),
+            'number' => Yii::t('app', 'Number'),
             'is_active' => Yii::t('app', 'Active')
         ];
     }

@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php else: ?>
 
         <div class="row">
-            <div class="col-lg-5">
+            <div class="col-lg-8">
 
                 <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
 
