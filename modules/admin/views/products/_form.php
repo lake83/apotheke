@@ -9,9 +9,11 @@ use yii\bootstrap\ActiveForm;
 
 $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'number')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'price')->textInput() ?>
     
     <?= $form->field($model, 'is_active')->checkbox() ?>
 

@@ -12,6 +12,7 @@ use yii\caching\TagDependency;
  * @property int $id
  * @property string $name
  * @property string $number
+ * @property double $price
  * @property int $is_active
  */
 class Products extends \yii\db\ActiveRecord
@@ -30,9 +31,10 @@ class Products extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            ['name', 'required'],
+            [['name', 'price'], 'required'],
             ['is_active', 'integer'],
             ['number', 'string', 'max' => 20],
+            ['price', 'number'],
             ['name', 'string', 'max' => 255]
         ];
     }
@@ -46,16 +48,9 @@ class Products extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => Yii::t('app', 'Name'),
             'number' => Yii::t('app', 'Number'),
+            'price' => Yii::t('app', 'Price') . ', EUR',
             'is_active' => Yii::t('app', 'Active')
         ];
-    }
-    
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProductsPrices()
-    {
-        return $this->hasMany(ProductsPrice::className(), ['product_id' => 'id']);
     }
     
     /**

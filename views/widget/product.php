@@ -9,7 +9,8 @@ echo GridView::widget([
     'dataProvider' => $dataProvider,
     'layout' => '{items}',
     'columns' => [
-        'amount',
+        'number',
+        'name',
         'price'
     ]
 ]) ?>

@@ -24,17 +24,13 @@ $this->title = Yii::t('app', 'Products');
 
             'number',
             'name',
+            'price',
             SiteHelper::is_active($searchModel),
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{prices} {update} {delete}',
-                'buttons' => [
-                    'prices' => function ($url, $model, $key) {
-                        return Html::a('<span class="fa fa-euro"></span>', $url, ['title' => Yii::t('app', 'Prices'), 'data-pjax' => 0]);
-                    }
-                ],
-                'options' => ['width' => '70px']
+                'template' => '{update}{delete}',
+                'options' => ['width' => '50px']
             ]
         ]
     ]);

@@ -18,7 +18,7 @@ class ProductsSearch extends Products
     {
         return [
             [['id', 'is_active'], 'integer'],
-            [['number', 'name'], 'safe']
+            [['number', 'price', 'name'], 'safe']
         ];
     }
 
@@ -51,6 +51,7 @@ class ProductsSearch extends Products
         }
         $query->andFilterWhere([
             'id' => $this->id,
+            'price' => $this->price,
             'is_active' => $this->is_active
         ]);
         $query->andFilterWhere(['like', 'name', $this->name])
