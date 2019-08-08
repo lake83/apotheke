@@ -8,7 +8,6 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use app\models\User;
 use app\components\SiteHelper;
 use app\components\LogTraffic;
 use app\models\Pages;
@@ -102,7 +101,7 @@ class SiteController extends Controller
         $this->layout = '@app/modules/admin/views/layouts/main-login';
         
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect(SiteHelper::redirectByRole(Yii::$app->user->status));
         }
         $model = new LoginForm();
         

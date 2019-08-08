@@ -47,11 +47,15 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'normalizer' => [
+                'class' => 'yii\web\UrlNormalizer'
+            ],
             'rules' => [
                 ['pattern' => '<action:(contact|error)>', 'route' => 'site/<action>', 'suffix' => '.html'],
                 ['pattern' => '<slug>', 'route' => 'site/page', 'suffix' => '.html'],
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
-                '' => 'site/index'
+                '' => 'site/index',
+                'admin' => 'site/admin'
             ]
 
         ],
