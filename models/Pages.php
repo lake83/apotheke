@@ -54,6 +54,7 @@ class Pages extends \yii\db\ActiveRecord
             [['image', 'content', 'description'], 'string'],
             [['position', 'is_product', 'is_active'], 'integer'],
             [['name', 'slug', 'title', 'keywords'], 'string', 'max' => 255],
+            ['position', 'default', 'value' => 0],
             ['image', 'safe']
         ];
     }
