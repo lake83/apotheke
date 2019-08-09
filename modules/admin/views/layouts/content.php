@@ -77,6 +77,9 @@ Modal::end();
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <h3 class="control-sidebar-heading"><?= Yii::t('app', 'Clear cache') ?></h3>
             <a class="btn btn-danger" href="<?=Url::to(['/admin/admin/clear-cache'])?>" data-confirm="<?= Yii::t('app', 'Are you sure you want to delete the entire cache?') ?>"><?= Yii::t('app', 'Clear') ?></a>
+            
+            <h3 class="control-sidebar-heading"><?= Yii::t('app', 'Delete orders and traffic') ?></h3>
+            <a class="btn btn-danger" href="#" onclick="js:clearData('<?= Yii::t('app', 'Are you sure you want to delete orders and traffic?') ?>', '<?= Yii::t('app', 'Delete orders and traffic') ?>', '<?=Url::to(['/admin/admin/clear-data'])?>');return false;"><?= Yii::t('app', 'Delete') ?></a>
         </div>
     </div>
 </aside>

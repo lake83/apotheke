@@ -1,5 +1,5 @@
 // Editing and creating settings
-$('body').on('beforeSubmit', '#paramForm, #createSettingForm', function () {
+$('body').on('beforeSubmit', '#paramForm, #createSettingForm, #clearData', function () {
     var form = $(this);
     if (form.find('.has-error').length) {
         return false;
@@ -22,7 +22,8 @@ $('body').on('beforeSubmit', '#paramForm, #createSettingForm', function () {
     });
     return false;
 });
-function settings(label,field,url){
+function settings(label,field,url)
+{
     $.ajax({
        type: 'POST',
        cache: false,
@@ -34,7 +35,8 @@ function settings(label,field,url){
        }
     });
 }
-function createSetting(title,url){
+function createSetting(title,url)
+{
     $.ajax({
        type: 'POST',
        cache: false,
@@ -44,6 +46,19 @@ function createSetting(title,url){
            $('#modal').modal('show').find('#modalTitle').text(title);
        }
     });
+}
+
+//delete orders and traffic
+function clearData(confirm_text, title, url)
+{
+    krajeeDialog.confirm(confirm_text, function (confirmed) {
+        if (confirmed) {
+            createSetting(title, url);
+        } else {
+            !cancel || cancel();
+        }
+    });
+    return false;
 }
 
 // conclusion of the confirm dialog in the style of bootstrap

@@ -9,6 +9,8 @@ use yii\filters\AccessControl;
 use app\models\User;
 use yii\base\DynamicModel;
 use yii\caching\TagDependency;
+use app\models\Orders;
+use app\models\Traffic;
 
 class AdminController extends Controller
 {
@@ -131,7 +133,7 @@ class AdminController extends Controller
         if ($model = Yii::$app->request->post('DynamicModel')) {
             if (Yii::$app->db->createCommand()->insert('settings', $model)->execute()) {
                 TagDependency::invalidate(Yii::$app->cache, 'settings');
-                Yii::$app->response->data =  '<div class="alert-success alert fade in">' . Yii::t('app', 'Changes saved.') . '</div>';
+                Yii::$app->response->data = '<div class="alert-success alert fade in">' . Yii::t('app', 'Changes saved.') . '</div>';
             }
             Yii::$app->end();
         }
@@ -152,6 +154,40 @@ class AdminController extends Controller
         Yii::$app->cache->flush();
         Yii::$app->session->setFlash('success', Yii::t('app', 'Cache flushing completed successfully.'));
         return $this->redirect(Yii::$app->request->referrer);
+    }
+    
+    /**
+     * Delete orders and traffic
+     * 
+     * @return string
+     */
+    public function actionClearData()
+    {
+        if (($model = Yii::$app->request->post('DynamicModel')) && !empty($model['period'])) {
+            $conection = Yii::$app->db;
+            $sql = 'DELETE FROM %s WHERE created_at < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL ' . $model['period'] . ' DAY))';
+            $message = '';
+            
+            if ($model['period'] !== 'all' && $conection->createCommand(sprintf($sql, 'orders'))->execute()) {
+                $message.= Yii::t('app', 'Orders data deleted.');
+            } elseif ($model['period'] !== 'all' && $conection->createCommand(sprintf($sql, 'traffic'))->execute()) {
+                $message.= Yii::t('app', 'Traffic data deleted.');
+            } elseif ($model['period'] == 'all') {
+                Orders::deleteAll();
+                Traffic::deleteAll();
+                $message = Yii::t('app', 'Orders data deleted.') . Yii::t('app', 'Traffic data deleted.');
+            } else {
+                $message = Yii::t('app', 'No data to delete.');
+            }
+            Yii::$app->response->data = '<div class="alert-success alert fade in">' . $message . '</div>';
+            
+            Yii::$app->end();
+        }
+        if (Yii::$app->request->isAjax) {
+           $model = new DynamicModel(['period']);
+           $model->addRule(['period'], 'required');
+           return $this->renderAjax('clear-data', ['model' => $model]); 
+        }
     }
     
     public function actionLogout()
