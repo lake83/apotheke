@@ -16,6 +16,7 @@ class m190806_114134_orders extends Migration
             'address' => $this->string()->notNull(),
             'product_id' => $this->integer()->notNull(),
             'sum' => $this->float()->notNull(),
+            'coupon_id' => $this->integer()->notNull(),
             'delivery_id' => $this->integer()->notNull(),
             'delivery_sum' => $this->float()->notNull(),
             'payment_id' => $this->integer()->notNull(),

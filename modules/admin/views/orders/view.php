@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\models\Coupon;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Orders */
@@ -32,6 +33,11 @@ $this->title = $model->name;
                 'value' => $model->product->name
             ],
             'sum',
+            [
+                'attribute' => 'coupon_id',
+                'value' => $model->coupon->code . ' ' . Yii::t('app', 'discount') . ' ' . $model->coupon->value .
+                    $model->coupon->type == Coupon::TYPE_PERCENT ? ' %' : ' €'
+            ],
             [
                 'attribute' => 'delivery_id',
                 'value' => $model->delivery->name

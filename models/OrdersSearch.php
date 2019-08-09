@@ -17,7 +17,7 @@ class OrdersSearch extends Orders
     public function rules()
     {
         return [
-            [['id', 'product_id', 'delivery_id', 'payment_id', 'status'], 'integer'],
+            [['id', 'product_id', 'coupon_id', 'delivery_id', 'payment_id', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'date', 'format' => 'd.m.Y'],
             [['name', 'phone', 'address', 'host', 'referrer', 'ip', 'agent', 'cookie_id', 'language'], 'safe'],
             [['sum', 'delivery_sum'], 'number'],
@@ -55,6 +55,7 @@ class OrdersSearch extends Orders
             'id' => $this->id,
             'product_id' => $this->product_id,
             'sum' => $this->sum,
+            'coupon_id' => $this->coupon_id,
             'delivery_id' => $this->delivery_id,
             'delivery_sum' => $this->delivery_sum,
             'payment_id' => $this->payment_id,

@@ -14,6 +14,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $address
  * @property int $product_id
  * @property double $sum
+ * @property int $coupon_id
  * @property int $delivery_id
  * @property double $delivery_sum
  * @property int $payment_id
@@ -59,7 +60,7 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'phone', 'address', 'product_id', 'sum', 'delivery_id', 'delivery_sum', 'payment_id'], 'required'],
-            [['product_id', 'delivery_id', 'payment_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['product_id', 'coupon_id', 'delivery_id', 'payment_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['sum', 'delivery_sum'], 'number'],
             [['name', 'address', 'referrer'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 20],
@@ -82,6 +83,7 @@ class Orders extends \yii\db\ActiveRecord
             'address' => Yii::t('app', 'Address'),
             'product_id' => Yii::t('app', 'Product'),
             'sum' => Yii::t('app', 'Sum'),
+            'coupon_id' => Yii::t('app', 'Coupon'),
             'delivery_id' => Yii::t('app', 'Delivery'),
             'delivery_sum' => Yii::t('app', 'Delivery Sum'),
             'payment_id' => Yii::t('app', 'Payment'),
@@ -121,6 +123,14 @@ class Orders extends \yii\db\ActiveRecord
     public function getProduct()
     {
         return $this->hasOne(Products::className(), ['id' => 'product_id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCoupon()
+    {
+        return $this->hasOne(Coupon::className(), ['id' => 'coupon_id']);
     }
     
     /**
