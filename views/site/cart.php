@@ -69,7 +69,7 @@ echo GridView::widget([
             'template' => '{remove}',
             'buttons' => [
                 'remove' => function ($url, $model, $key) {
-                    return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['site/cart-remove', 'id' => $model['id']], [
+                    return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['site/cart', 'id' => $model['id'], 'action' => 'remove'], [
                         'title' => Yii::t('main', 'Produkt entfernen'),
                         'data-method' => 'POST',
                         'data-pjax' => 1

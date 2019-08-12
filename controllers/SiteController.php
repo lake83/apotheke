@@ -41,8 +41,7 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
-                    'buy' => ['post'],
-                    'cart-remove' => ['post']
+                    'buy' => ['post']
                 ]
             ],
             'traffic' => [
@@ -200,10 +199,19 @@ class SiteController extends Controller
                 $cart['products'][$id]['quantity']++;
                 $cart['sum']+= $cart['products'][$id]['price'];
                 $cart['quantity']++;
-            } else {
+            } elseif ($action == 'minus') {
                 $cart['products'][$id]['quantity']--;
                 $cart['sum']-= $cart['products'][$id]['price'];
                 $cart['quantity']--;
+            } else {
+                $cart['quantity']-= $cart['products'][$id]['quantity'];
+                
+                if ($cart['quantity'] == 0) {
+                    $cart['sum'] = '0.00';
+                } else {
+                    $cart['sum']-= $cart['products'][$id]['price'] * $cart['products'][$id]['quantity'];
+                }
+                unset($cart['products'][$id]);
             }
             $session->set('cart', $cart);
         }
@@ -211,27 +219,5 @@ class SiteController extends Controller
             'allModels' => Yii::$app->session->get('cart')['products'],
             'pagination' => false
         ])]);
-    }
-    
-    /**
-     * Remove item from shopping cart
-     *
-     * @param integer $id product ID
-     * @return string
-     */
-    public function actionCartRemove($id)
-    {
-        $session = Yii::$app->session;
-        $cart = $session->get('cart');
-        $cart['quantity']-= $cart['products'][$id]['quantity'];
-        
-        if ($cart['quantity'] == 0) {
-            $cart['sum'] = '0.00';
-        } else {
-            $cart['sum']-= $cart['products'][$id]['price'] * $cart['products'][$id]['quantity'];
-        }
-        unset($cart['products'][$id]);
-        $session->set('cart', $cart);
-        return $this->redirect(['cart']);
     }
 }
