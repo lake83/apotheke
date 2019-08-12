@@ -79,3 +79,10 @@ if ($('input[id$="created_at"], input[id$="date_from"], input[id$="date_to"]').l
         $('input[id$="created_at"], input[id$="date_from"], input[id$="date_to"]').datepicker($.extend({}, $.datepicker.regional['en'], {"dateFormat":"dd.mm.yy"}));
     });
 }
+
+// Show info modal on content page
+$('#blocks-info-btn').click(function() {
+    $('#modal').modal('show').find('#modalTitle').text($('#blocks-info h2').text());
+    $('#modal').find('.modal-body').html($('#blocks-info div').html());
+    return false;
+});

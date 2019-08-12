@@ -11,7 +11,17 @@ use app\components\SiteHelper;
 $this->title = Yii::t('app', 'Pages');
 ?>
 
-<p><?= Html::a(Yii::t('app', 'Create page'), ['create'], ['class' => 'btn btn-success']) ?></p>
+<p>
+    <?= Html::a(Yii::t('app', 'Create page'), ['create'], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('<i class="fa fa-info-circle"></i>', ['#'], ['id' => 'blocks-info-btn', 'class' => 'btn btn-info pull-right']) ?>
+</p>
+<div id="blocks-info" class="hidden">
+   <h2><?= Yii::t('app', 'Page elements') ?></h2>
+   <div>
+       <p>{{grid}} - <?= Yii::t('app', 'Products blocks on main page.') ?></p>
+       <p>{{product 10001,10002}} - <?= Yii::t('app', 'Products grid on product page. Contains comma-separated product numbers.') ?></p>
+   </div>
+</div>
 
 <?=  GridView::widget([
     'layout' => '{items}{pager}',

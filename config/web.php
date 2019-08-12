@@ -4,8 +4,8 @@ $config = [
     'name' => 'Apotheke',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['app\config\settings'],
-    'language' => 'en',
-    'sourceLanguage' => 'en',
+    'language' => 'de-DE',
+    'sourceLanguage' => 'de-DE',
     'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\Module',
@@ -51,7 +51,7 @@ $config = [
                 'class' => 'yii\web\UrlNormalizer'
             ],
             'rules' => [
-                ['pattern' => '<action:(contact|error)>', 'route' => 'site/<action>', 'suffix' => '.html'],
+                ['pattern' => '<action:(contact|error|cart)>', 'route' => 'site/<action>', 'suffix' => '.html'],
                 ['pattern' => '<slug>', 'route' => 'site/page', 'suffix' => '.html'],
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 '' => 'site/index',
@@ -61,6 +61,13 @@ $config = [
         ],
         'formatter' => [
             'timeZone' => 'Europe/Berlin'
+        ],
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => 'yii\i18n\PhpMessageSource'
+                ]
+            ]
         ]
     ]
 ];

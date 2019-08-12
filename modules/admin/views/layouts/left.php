@@ -18,7 +18,9 @@ app\assets\AdminAsset::register($this);
         ['label' => Yii::t('app', 'Delivery'), 'url' => ['delivery/index'], 'icon' => 'car'],
         ['label' => Yii::t('app', 'Traffic'), 'url' => ['traffic/index'], 'icon' => 'arrows'],
         ['label' => Yii::t('app', 'Content'), 'url' => ['pages/index'], 'icon' => 'book'],
-        ['label' => Yii::t('app', 'Coupon'), 'url' => ['coupon/index'], 'icon' => 'file']
+        ['label' => Yii::t('app', 'Coupon'), 'url' => ['coupon/index'], 'icon' => 'file'],
+        ['label' => Yii::t('app', 'Contact'), 'url' => ['contact/index'], 'icon' => 'envelope'],
+        ['label' => Yii::t('app', 'Reviews'), 'url' => ['reviews/index'], 'icon' => 'comment']
     ]
 ]);	
 ?>

@@ -7,13 +7,16 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\Contact;
 use app\components\SiteHelper;
 use app\components\LogTraffic;
 use app\models\Pages;
 use yii\web\NotFoundHttpException;
 use app\components\ProductGridWidget;
+use app\components\MainGridWidget;
 use yii\caching\TagDependency;
+use yii\web\Response;
+use yii\data\ArrayDataProvider;
 
 class SiteController extends Controller
 {
@@ -37,7 +40,9 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post']
+                    'logout' => ['post'],
+                    'buy' => ['post'],
+                    'cart-remove' => ['post']
                 ]
             ],
             'traffic' => [
@@ -70,12 +75,19 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('page', ['model' => Pages::findOne(['slug' => 'main'])]);
+        return $this->render('page', ['model' => Yii::$app->cache->getOrSet('page_main', function(){
+            if (!$model = Pages::findOne(['slug' => 'main'])) {
+                throw new NotFoundHttpException(Yii::t('app', 'Page not found.'));
+            }
+            $model->content = str_replace('{{grid}}', MainGridWidget::widget(), $model->content);
+            return $model;
+        }, 0, new TagDependency(['tags' => 'pages']))]);
     }
     
     /**
      * Displays content pages
      *
+     * @param string $slug page alias
      * @return string
      */
     public function actionPage($slug)
@@ -130,14 +142,96 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+        $model = new Contact;
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('contactFormSubmitted');
 
             return $this->refresh();
         }
-        return $this->render('contact', [
-            'model' => $model
-        ]);
+        return $this->render('contact', ['model' => $model]);
+    }
+    
+    /**
+     * Add product to cart
+     *
+     * @param integer $id product ID
+     * @return string
+     */
+    public function actionBuy($id)
+    {
+        $request = Yii::$app->request;
+        
+        if ($request->isAjax && ($price = $request->post('price')) && ($name = $request->post('name'))) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $session = Yii::$app->session;
+            
+            if (!$session->has('cart')) {
+                $session->set('cart', ['sum' => '0.00', 'quantity' => 0, 'products' => []]);
+            }
+            $cart = $session->get('cart');
+            $cart['products'][$id]['id'] = $id;
+            $cart['products'][$id]['name'] = $name;
+            $cart['products'][$id]['price'] = $price;
+            $cart['products'][$id]['quantity']++;
+             
+            $cart['sum']+= $price;
+            $cart['quantity']++;
+            
+            $session->set('cart', $cart);
+            
+            return ['price' => round($cart['sum'], 2), 'quantity' => $cart['quantity']];
+        }
+    }
+    
+    /**
+     * Displays shopping cart
+     *
+     * @return string
+     */
+    public function actionCart()
+    {
+        $request = Yii::$app->request;
+        
+        if ($request->isPost && ($id = $request->get('id')) && ($action = $request->get('action'))) {
+            $session = Yii::$app->session;
+            $cart = $session->get('cart');
+            
+            if ($action == 'plus') {
+                $cart['products'][$id]['quantity']++;
+                $cart['sum']+= $cart['products'][$id]['price'];
+                $cart['quantity']++;
+            } else {
+                $cart['products'][$id]['quantity']--;
+                $cart['sum']-= $cart['products'][$id]['price'];
+                $cart['quantity']--;
+            }
+            $session->set('cart', $cart);
+        }
+        return $this->render('cart', ['dataProvider' => new ArrayDataProvider([
+            'allModels' => Yii::$app->session->get('cart')['products'],
+            'pagination' => false
+        ])]);
+    }
+    
+    /**
+     * Remove item from shopping cart
+     *
+     * @param integer $id product ID
+     * @return string
+     */
+    public function actionCartRemove($id)
+    {
+        $session = Yii::$app->session;
+        $cart = $session->get('cart');
+        $cart['quantity']-= $cart['products'][$id]['quantity'];
+        
+        if ($cart['quantity'] == 0) {
+            $cart['sum'] = '0.00';
+        } else {
+            $cart['sum']-= $cart['products'][$id]['price'] * $cart['products'][$id]['quantity'];
+        }
+        unset($cart['products'][$id]);
+        $session->set('cart', $cart);
+        return $this->redirect(['cart']);
     }
 }

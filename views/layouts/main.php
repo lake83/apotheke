@@ -8,6 +8,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use app\assets\AppAsset;
 use app\models\Pages;
+use yii\widgets\Pjax;
 
 AppAsset::register($this);
 
@@ -16,6 +17,7 @@ $menu_items = [];
 foreach (Pages::find()->select(['name', 'slug'])->where(['is_active' => 1, 'is_product' => 1])->orderBy('position ASC')->asArray()->all() as $link) {
     $menu_items[] = ['label' => $link['name'], 'url' => ['site/page', 'slug' => $link['slug']]];
 }
+$session = Yii::$app->session;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -32,23 +34,30 @@ foreach (Pages::find()->select(['name', 'slug'])->where(['is_active' => 1, 'is_p
 
 <div class="wrap">
     <div class="header">
-    
+        <div class="container">
+            <div class="logo">
+            <?= Html::a(Yii::t('main', 'Private Apotheke Deutschland'), ['site/index'], ['class' => 'logo']) ?>
+            <?php Pjax::begin(['id' => 'menu-cart']) ?>            
+            <?= Html::a('<b class="hidden-xs hidden-sm">' . Yii::t('main', 'Warenkorb') . ':</b> € <strong>' . ($session['cart']['sum'] ?:'0.00') . '</strong> <span>' . ($session['cart']['quantity'] ?:'0') . '</span>', ['site/cart'], ['class' => 'cart', 'data-pjax' => 0]) ?>
+            <?php Pjax::end() ?>
+            </div>
+        </div>
     </div>
     <?php
     NavBar::begin([
         'id' => 'main-menu',
         'options' => [
             'class' => 'navbar-inverse'
-        ],
+        ]
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Über uns', 'url' => ['site/page', 'slug' => 'about'], 'active' => $slug == 'about'],
-            ['label' => 'Fragen&Antworten', 'url' => ['site/page', 'slug' => 'faq'], 'active' => $slug == 'faq'],
-            ['label' => 'Kontakt', 'url' => ['site/contact']],
-            ['label' => 'Kundenerfahrungen', 'url' => ['site/page', 'slug' => 'reviews'], 'active' => $slug == 'reviews'],
-            ['label' => 'Lieferung&Bezahlung', 'url' => ['site/page', 'slug' => 'delivery-payment'], 'active' => $slug == 'delivery-payment']
+            ['label' => Yii::t('main', 'Über uns'), 'url' => ['site/page', 'slug' => 'about'], 'active' => $slug == 'about'],
+            ['label' => Yii::t('main', 'Fragen&Antworten'), 'url' => ['site/page', 'slug' => 'faq'], 'active' => $slug == 'faq'],
+            ['label' => Yii::t('main', 'Kontakt'), 'url' => ['site/contact']],
+            ['label' => Yii::t('main', 'Kundenerfahrungen'), 'url' => ['site/page', 'slug' => 'reviews'], 'active' => $slug == 'reviews'],
+            ['label' => Yii::t('main', 'Lieferung&Bezahlung'), 'url' => ['site/page', 'slug' => 'delivery-payment'], 'active' => $slug == 'delivery-payment']
         ]
     ]);
     NavBar::end();
@@ -56,6 +65,7 @@ foreach (Pages::find()->select(['name', 'slug'])->where(['is_active' => 1, 'is_p
 
     <div class="container">
         <div class="col-md-3">
+            <div class="products-header">Potenzmittel</div>
             <?= Nav::widget(['items' => $menu_items]) ?>
         </div>
         <div class="col-md-9">

@@ -12,8 +12,14 @@ body {
     padding-bottom: 20px;
 }
 .header {
-    height: 125px;
-    background-color: #a4f5ff;
+    height: 180px;
+    background-color: #18c7f2;
+}
+.header .logo {
+    display: block;
+    width: 100%;
+    height: 180px;
+    background: url('/images/pharmacy.png') no-repeat center left 7%, url('/images/flag.png') no-repeat center left;
 }
 #main-menu {
     background-color: #07314d;
@@ -22,6 +28,50 @@ body {
 }
 #main-menu .navbar-nav {
     font-size: 18px;
+}
+.header .cart {
+    float: right;
+    display: block;
+    position: relative;
+    font-size: 18px;
+    color: #fff;
+    z-index: 9999;
+    background-color: #0c476f;
+    padding: 9px;
+    margin-right: -15px;
+}
+.header .cart:hover {
+    text-decoration: none;
+}
+.header .cart span {
+    background: #EB5757;
+    border-radius: 50%;
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    text-align: center;
+    padding-top: 5px;
+    margin-left: 12px;
+}
+#main-menu .navbar-toggle {
+    float: left;
+    margin: 8px 15px;
+}
+.products-header {
+    display: block;
+    width: 100%;
+    font-size: 18px;
+    padding: 12px 15px;
+    background-color: #0c476f;
+    color: #fff;
+}
+.product_img {
+    display: block;
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center center !important;
+    margin: 0 auto;
 }
 .footer {
     height: 60px;
