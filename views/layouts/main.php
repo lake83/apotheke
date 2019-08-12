@@ -36,9 +36,9 @@ $session = Yii::$app->session;
     <div class="header">
         <div class="container">
             <div class="logo">
-            <?= Html::a(Yii::t('main', 'Private Apotheke Deutschland'), ['site/index'], ['class' => 'logo']) ?>
+            <?= Html::a(Yii::t('main', 'Private pharmacy Germany'), ['site/index'], ['class' => 'logo']) ?>
             <?php Pjax::begin(['id' => 'menu-cart']) ?>            
-            <?= Html::a('<b class="hidden-xs hidden-sm">' . Yii::t('main', 'Warenkorb') . ':</b> € <strong>' . ($session['cart']['sum'] ?:'0.00') . '</strong> <span>' . ($session['cart']['quantity'] ?:'0') . '</span>', ['site/cart'], ['class' => 'cart', 'data-pjax' => 0]) ?>
+            <?= Html::a('<b class="hidden-xs hidden-sm">' . Yii::t('main', 'Shopping cart') . ':</b> € <strong>' . ($session['cart']['sum'] ?:'0.00') . '</strong> <span>' . ($session['cart']['quantity'] ?:'0') . '</span>', ['site/cart'], ['class' => 'cart', 'data-pjax' => 0]) ?>
             <?php Pjax::end() ?>
             </div>
         </div>
@@ -53,11 +53,11 @@ $session = Yii::$app->session;
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => Yii::t('main', 'Über uns'), 'url' => ['site/page', 'slug' => 'about'], 'active' => $slug == 'about'],
-            ['label' => Yii::t('main', 'Fragen&Antworten'), 'url' => ['site/page', 'slug' => 'faq'], 'active' => $slug == 'faq'],
-            ['label' => Yii::t('main', 'Kontakt'), 'url' => ['site/contact']],
-            ['label' => Yii::t('main', 'Kundenerfahrungen'), 'url' => ['site/page', 'slug' => 'reviews'], 'active' => $slug == 'reviews'],
-            ['label' => Yii::t('main', 'Lieferung&Bezahlung'), 'url' => ['site/page', 'slug' => 'delivery-payment'], 'active' => $slug == 'delivery-payment']
+            ['label' => Yii::t('main', 'About us'), 'url' => ['site/page', 'slug' => 'about'], 'active' => $slug == 'about'],
+            ['label' => Yii::t('main', 'Answers & questions'), 'url' => ['site/page', 'slug' => 'faq'], 'active' => $slug == 'faq'],
+            ['label' => Yii::t('main', 'Contact'), 'url' => ['site/contact']],
+            ['label' => Yii::t('main', 'Reviews'), 'url' => ['site/page', 'slug' => 'reviews'], 'active' => $slug == 'reviews'],
+            ['label' => Yii::t('main', 'Delivery & payment'), 'url' => ['site/page', 'slug' => 'delivery-payment'], 'active' => $slug == 'delivery-payment']
         ]
     ]);
     NavBar::end();

@@ -31,11 +31,11 @@ class ResetPasswordForm extends Model
     public function __construct($token, $config = [])
     {
         if (empty($token) || !is_string($token)) {
-            throw new InvalidParamException(Yii::t('app', 'The token cannot be empty.'));
+            throw new InvalidParamException(Yii::t('main', 'The token cannot be empty.'));
         }
         $this->_user = User::findByPasswordResetToken($token);
         if (!$this->_user) {
-            throw new InvalidParamException(Yii::t('app', 'Wrong token.'));
+            throw new InvalidParamException(Yii::t('main', 'Wrong token.'));
         }
         parent::__construct($config);
     }
@@ -59,8 +59,8 @@ class ResetPasswordForm extends Model
     public function attributeLabels()
     {
         return [
-            'password' => Yii::t('app', 'Password'),
-            'verify_password' => Yii::t('app', 'Password again')
+            'password' => Yii::t('main', 'Password'),
+            'verify_password' => Yii::t('main', 'Password again')
         ];
     }
 

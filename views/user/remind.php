@@ -6,7 +6,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\modules\user\RemindForm */
 
-$this->title = Yii::t('app', 'Access recovery');
+$this->title = Yii::t('main', 'Access recovery');
 
 $fieldOptions = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -29,7 +29,7 @@ $fieldOptions = [
 
         <div class="row">
             <div class="col-xs-6">
-                <?= Html::submitButton(Yii::t('app', 'Send'), ['class' => 'btn btn-primary btn-flat', 'name' => 'login-button']) ?>
+                <?= Html::submitButton(Yii::t('main', 'Send'), ['class' => 'btn btn-primary btn-flat', 'name' => 'login-button']) ?>
             </div>
         </div>
 
@@ -37,7 +37,7 @@ $fieldOptions = [
         
         <div class="text-center">
             <br />
-            <?= Html::a('<i class="fa fa-sign-in"></i> ' . Yii::t('app', 'Authorization'), ['/admin'], ['class' => 'btn btn-block btn-social btn-facebook btn-flat']) ?>
+            <?= Html::a('<i class="fa fa-sign-in"></i> ' . Yii::t('main', 'Authorization'), ['/admin'], ['class' => 'btn btn-block btn-social btn-facebook btn-flat']) ?>
         </div>
 
     </div>

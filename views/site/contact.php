@@ -8,14 +8,14 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
-$this->title = Yii::t('app', 'Contacts');
+$this->title = Yii::t('main', 'Contact');
 ?>
 <div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
 
-        <p><?= Yii::t('app', 'Thank you for contacting us. We will reply as soon as possible.') ?></p>
+        <p><?= Yii::t('main', 'Thank you for contacting us. We will reply as soon as possible.') ?></p>
 
     <?php else: ?>
 
@@ -37,7 +37,7 @@ $this->title = Yii::t('app', 'Contacts');
                     ]) ?>
 
                     <div class="form-group">
-                        <?= Html::submitButton(Yii::t('app', 'Send'), ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
+                        <?= Html::submitButton(Yii::t('main', 'Send'), ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
                     </div>
 
                 <?php ActiveForm::end(); ?>

@@ -51,11 +51,11 @@ class UserController extends Controller
         if (Yii::$app->mailer->compose(['html' => 'emailActivation-html'], ['user' => Yii::$app->user->identity])
             ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->name])
             ->setTo(Yii::$app->user->email)
-            ->setSubject(Yii::t('app', 'Email confirmation to ') . Yii::$app->name)
+            ->setSubject(Yii::t('main', 'Email confirmation to ') . Yii::$app->name)
             ->send()) {
-            Yii::$app->session->setFlash('success', Yii::t('app', 'A confirmation email has been sent.'));    
+            Yii::$app->session->setFlash('success', Yii::t('main', 'A confirmation email has been sent.'));    
         } else {
-            Yii::$app->session->setFlash('error', Yii::t('app', 'Failed to send email.'));
+            Yii::$app->session->setFlash('error', Yii::t('main', 'Failed to send email.'));
         }
         return $this->redirect(SiteHelper::redirectByRole(Yii::$app->user->status));
     }
@@ -69,16 +69,16 @@ class UserController extends Controller
     public function actionEmailConfirmation($token)
     {
         if (empty($token) || !is_string($token)) {
-            throw new BadRequestHttpException(Yii::t('app', 'The token cannot be empty.'));
+            throw new BadRequestHttpException(Yii::t('main', 'The token cannot be empty.'));
         } else {
             $model = User::findOne(['auth_key' => $token]);
         }
         if (!$model || !$model->validateAuthKey($token)) {
-            throw new BadRequestHttpException(Yii::t('app', 'Wrong token.'));
+            throw new BadRequestHttpException(Yii::t('main', 'Wrong token.'));
         } else {
             $model->is_active = 1;
             if($model->save()) {
-                Yii::$app->session->setFlash('success', Yii::t('app', 'Your email has been verified.'));
+                Yii::$app->session->setFlash('success', Yii::t('main', 'Your email has been verified.'));
                 return Yii::$app->user->isGuest ? $this->goHome() : $this->redirect(SiteHelper::redirectByRole(Yii::$app->user->status));
             }
         }
@@ -97,9 +97,9 @@ class UserController extends Controller
         
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', Yii::t('app', 'Instructions sent to your e-mail.'));
+                Yii::$app->session->setFlash('success', Yii::t('main', 'Instructions sent to your e-mail.'));
             } else {
-                Yii::$app->session->setFlash('error', Yii::t('app', 'Error sending e-mail.'));
+                Yii::$app->session->setFlash('error', Yii::t('main', 'Error sending e-mail.'));
             }
             return $this->redirect(Yii::$app->request->referrer);
         }
@@ -123,7 +123,7 @@ class UserController extends Controller
             throw new BadRequestHttpException($e->getMessage());
         }
         if ($model->load(Yii::$app->request->post()) && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', Yii::t('app', 'New password saved.'));
+            Yii::$app->session->setFlash('success', Yii::t('main', 'New password saved.'));
 
             return $this->redirect(['site/index']);
         }
@@ -143,7 +143,7 @@ class UserController extends Controller
         
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
-                Yii::$app->session->setFlash('success', Yii::t('app', 'Instructions for completing registration have been sent to your e-mail.'));
+                Yii::$app->session->setFlash('success', Yii::t('main', 'Instructions for completing registration have been sent to your e-mail.'));
                 Yii::$app->user->login($user);
                 return $this->redirect(SiteHelper::redirectByRole($user->status));
             }

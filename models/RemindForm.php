@@ -23,7 +23,7 @@ class RemindForm extends Model
             ['email', 'exist', 
                 'targetClass' => User::className(),
                 'filter' => ['is_active' => 1],
-                'message' => Yii::t('app', 'A user with such an email does not exist.')
+                'message' => Yii::t('main', 'A user with such an email does not exist.')
             ]
         ];
     }
@@ -53,7 +53,7 @@ class RemindForm extends Model
                 return Yii::$app->mailer->compose(['html' => 'remindPass-html'], ['user' => $user])
                     ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->name])
                     ->setTo($this->email)
-                    ->setSubject(Yii::t('app', 'Password recovery to ') . Yii::$app->name)
+                    ->setSubject(Yii::t('main', 'Password recovery to ') . Yii::$app->name)
                     ->send();
             }
         }

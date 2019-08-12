@@ -41,8 +41,8 @@ class LoginForm extends Model
     {
         return [
             'username' => 'E-mail',
-            'password' => Yii::t('app', 'Password'),
-            'rememberMe' => Yii::t('app', 'Remember me')
+            'password' => Yii::t('main', 'Password'),
+            'rememberMe' => Yii::t('main', 'Remember me')
         ];
     }
 
@@ -59,7 +59,7 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, Yii::t('app', 'Wrong login or password.'));
+                $this->addError($attribute, Yii::t('main', 'Wrong login or password.'));
             }
         }
     }

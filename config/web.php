@@ -1,11 +1,11 @@
 <?php
 $config = [
     'id' => 'basic',
-    'name' => 'Apotheke',
+    'name' => Yii::t('main', 'Pharmacy'),
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['app\config\settings'],
     'language' => 'de-DE',
-    'sourceLanguage' => 'de-DE',
+    'sourceLanguage' => 'en-US',
     'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\Module',

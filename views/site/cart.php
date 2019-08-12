@@ -7,7 +7,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
 
-$this->title = Yii::t('app', 'Warenkorb');
+$this->title = Yii::t('main', 'Shopping cart');
 ?>
 
 <h1><?= $this->title ?></h1>
@@ -24,8 +24,8 @@ echo GridView::widget([
     'columns' => [
         [
            'attribute' => 'name',
-           'header' => Yii::t('main', 'Produkt'),
-           'footer' => Yii::t('main', 'Gesamtbetrag:'),
+           'header' => Yii::t('main', 'Product'),
+           'footer' => Yii::t('main', 'Total amount:'),
            'footerOptions' => [
                'colspan' => 2
            ]
@@ -33,14 +33,14 @@ echo GridView::widget([
         [
            'attribute' => 'quantity',
            'format' => 'raw',
-           'header' => Yii::t('main', 'Menge'),
+           'header' => Yii::t('main', 'Amount'),
            'value' => function ($model, $index, $widget) {
                return ($model['quantity']>1 ? Html::a('<span class="glyphicon glyphicon-minus"></span> ', ['site/cart', 'id' => $model['id'], 'action' => 'minus'], [
-                        'title' => Yii::t('main', 'subtrahieren'),
+                        'title' => Yii::t('main', 'subtract'),
                         'data-method' => 'POST',
                         'data-pjax' => 1
                     ]) : '') . $model['quantity'] . Html::a(' <span class="glyphicon glyphicon-plus"></span>', ['site/cart', 'id' => $model['id'], 'action' => 'plus'], [
-                        'title' => Yii::t('main', 'hinzufügen'),
+                        'title' => Yii::t('main', 'add'),
                         'data-method' => 'POST',
                         'data-pjax' => 1
                     ]);
@@ -54,7 +54,7 @@ echo GridView::widget([
         ],
         [
            'attribute' => 'price',
-           'header' => Yii::t('main', 'Preis'),
+           'header' => Yii::t('main', 'Price'),
            'value' => function ($model, $index, $widget) {
                return $model['price'];
            },
@@ -70,7 +70,7 @@ echo GridView::widget([
             'buttons' => [
                 'remove' => function ($url, $model, $key) {
                     return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['site/cart', 'id' => $model['id'], 'action' => 'remove'], [
-                        'title' => Yii::t('main', 'Produkt entfernen'),
+                        'title' => Yii::t('main', 'Remove product'),
                         'data-method' => 'POST',
                         'data-pjax' => 1
                     ]);

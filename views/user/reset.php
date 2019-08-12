@@ -6,7 +6,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\modules\user\models\ResetForm */
 
-$this->title = Yii::t('app', 'Change Password');
+$this->title = Yii::t('main', 'Change Password');
 
 $fieldOptions = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -34,7 +34,7 @@ $fieldOptions = [
 
         <div class="row">
             <div class="col-xs-6">
-                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-primary btn-flat', 'name' => 'login-button']) ?>
+                <?= Html::submitButton(Yii::t('main', 'Save'), ['class' => 'btn btn-primary btn-flat', 'name' => 'login-button']) ?>
             </div>
         </div>
 
@@ -42,7 +42,7 @@ $fieldOptions = [
         
         <div class="text-center">
             <br />
-            <?= Html::a('<i class="fa fa-sign-in"></i> ' . Yii::t('app', 'Authorization'), ['/admin'], ['class' => 'btn btn-block btn-social btn-facebook btn-flat']) ?>
+            <?= Html::a('<i class="fa fa-sign-in"></i> ' . Yii::t('main', 'Authorization'), ['/admin'], ['class' => 'btn btn-block btn-social btn-facebook btn-flat']) ?>
         </div>
 
     </div>

@@ -6,7 +6,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\LoginForm */
 
-$this->title = Yii::$app->name . ' - ' . Yii::t('app', 'Login');
+$this->title = Yii::$app->name . ' - ' . Yii::t('main', 'Login');
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -24,14 +24,14 @@ $fieldOptions2 = [
         <?= Html::a('<b>' . Yii::$app->name . '</b>', ['site/index']) ?>
     </div>
     <div class="login-box-body">
-        <p class="login-box-msg"><?= Yii::t('app', 'Authorization') ?></p>
+        <p class="login-box-msg"><?= Yii::t('main', 'Authorization') ?></p>
 
         <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
         <?= $form
             ->field($model, 'username', $fieldOptions1)
             ->label(false)
-            ->textInput(['placeholder' => Yii::t('app', 'Login or E-mail')]) ?>
+            ->textInput(['placeholder' => Yii::t('main', 'Login or E-mail')]) ?>
 
         <?= $form
             ->field($model, 'password', $fieldOptions2)
@@ -43,7 +43,7 @@ $fieldOptions2 = [
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
             </div>
             <div class="col-xs-4">
-                <?= Html::submitButton(Yii::t('app', 'Login'), ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
+                <?= Html::submitButton(Yii::t('main', 'Login'), ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
             </div>
         </div>
 
@@ -51,7 +51,7 @@ $fieldOptions2 = [
 
         <div class="text-center">
             <br />
-            <?= Html::a('<i class="fa fa-info-circle"></i> ' . Yii::t('app', 'Remind password'), ['user/remind'], ['class' => 'btn btn-block btn-social btn-facebook btn-flat']) ?>
+            <?= Html::a('<i class="fa fa-info-circle"></i> ' . Yii::t('main', 'Remind password'), ['user/remind'], ['class' => 'btn btn-block btn-social btn-facebook btn-flat']) ?>
         </div>
 
     </div>

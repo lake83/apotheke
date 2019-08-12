@@ -76,7 +76,7 @@ class SiteController extends Controller
     {
         return $this->render('page', ['model' => Yii::$app->cache->getOrSet('page_main', function(){
             if (!$model = Pages::findOne(['slug' => 'main'])) {
-                throw new NotFoundHttpException(Yii::t('app', 'Page not found.'));
+                throw new NotFoundHttpException(Yii::t('main', 'Page not found.'));
             }
             $model->content = str_replace('{{grid}}', MainGridWidget::widget(), $model->content);
             return $model;
@@ -93,7 +93,7 @@ class SiteController extends Controller
     {
         return $this->render('page', ['model' => Yii::$app->cache->getOrSet('page_' . $slug, function() use ($slug){
             if (!$model = Pages::findOne(['slug' => $slug])) {
-                throw new NotFoundHttpException(Yii::t('app', 'Page not found.'));
+                throw new NotFoundHttpException(Yii::t('main', 'Page not found.'));
             }
             $model->content = preg_replace_callback('/{{product (.*?)}}/', function ($matches) {
                 return ProductGridWidget::widget(['number' => $matches[1]]);

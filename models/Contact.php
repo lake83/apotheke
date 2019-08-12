@@ -66,12 +66,12 @@ class Contact extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => Yii::t('app', 'Name'),
-            'email' => Yii::t('app', 'Email'),
-            'subject' => Yii::t('app', 'Subject'),
-            'text' => Yii::t('app', 'Text'),
-            'created_at' => Yii::t('app', 'Created'),
-            'verifyCode' => Yii::t('app', 'Verification code')
+            'name' => Yii::t('main', 'Name'),
+            'email' => 'Email',
+            'subject' => Yii::t('main', 'Subject'),
+            'text' => Yii::t('main', 'Text'),
+            'created_at' => Yii::t('main', 'Created'),
+            'verifyCode' => Yii::t('main', 'Verification code')
         ];
     }
     

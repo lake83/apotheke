@@ -12,11 +12,11 @@ echo GridView::widget([
     'columns' => [
         [
            'attribute' => 'name',
-           'header' => Yii::t('main', 'Produkt')
+           'header' => Yii::t('main', 'Product')
         ],
         [
            'attribute' => 'price',
-           'header' => Yii::t('main', 'Preis'),
+           'header' => Yii::t('main', 'Price'),
            'value' => function ($model, $index, $widget) {
                return $model->price . ' €';
            }
@@ -28,7 +28,7 @@ echo GridView::widget([
             'buttons' => [
                 'buy' => function ($url, $model, $key) {
                     return Html::a('<span class="glyphicon glyphicon-gift"></span>', ['site/buy', 'id' => $model->id], [
-                        'title' => Yii::t('main', 'Kaufen'),
+                        'title' => Yii::t('main', 'Buy'),
                         'data-method' => 'POST',
                         'class' => 'buy-product'
                     ]);
