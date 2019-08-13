@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property int $id
  * @property string $name
+ * @property string $email
  * @property string $ip
  * @property string $text
  * @property int $is_active
@@ -44,15 +45,18 @@ class Reviews extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'ip', 'text'], 'required'],
+            [['name', 'email', 'text'], 'required'],
             ['text', 'string'],
+            ['email', 'email'],
             [['is_active', 'created_at'], 'integer'],
             ['name', 'string', 'max' => 255],
+            ['email', 'string', 'max' => 100],
             ['ip', 'string', 'max' => 30],
-            ['ip', 'unique', 'message' => Yii::t('app', 'You have already left a review.')],
+            ['ip', 'unique', 'message' => Yii::t('main', 'You have already left a review.')],
             [['name', 'text'], 'filter', 'filter' => function ($value) {
                 return \yii\helpers\HtmlPurifier::process($value);
-            }]
+            }],
+            ['is_active', 'default', 'value' => 0]
         ];
     }
 
@@ -63,22 +67,12 @@ class Reviews extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => Yii::t('app', 'Name'),
+            'name' => Yii::t('main', 'Name'),
+            'email' => 'Email',
             'ip' => 'IP',
-            'text' => Yii::t('app', 'Text'),
+            'text' => Yii::t('main', 'Text'),
             'is_active' => Yii::t('app', 'Active'),
             'created_at' => Yii::t('app', 'Created')
         ];
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public function beforeSave($insert)
-    {
-        if ($insert) {
-            $this->ip = Yii::$app->request->userIP;
-        }
-        return parent::beforeSave($insert);
     }
 }

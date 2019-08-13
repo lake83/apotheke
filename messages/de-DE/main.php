@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'Pharmacy' => 'Apotheke',
     'Name' => 'Name',
     'Subject' => 'Thema',
     'Text' => 'Text',
@@ -56,7 +55,7 @@ return [
     'Login' => 'Anmeldung',
     'Login or E-mail' => 'Login oder E-Mail',
     'Remind password' => 'Passwort vergessen',
-    '' => '',
+    'You have already left a review.' => 'Sie haben bereits eine Bewertung abgegeben.',
     '' => '',
     '' => '',
     '' => '',

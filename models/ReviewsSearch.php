@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Reviews;
@@ -19,7 +20,7 @@ class ReviewsSearch extends Reviews
         return [
             [['id', 'is_active'], 'integer'],
             ['created_at', 'date', 'format' => 'd.m.Y'],
-            [['name', 'ip', 'text'], 'safe']
+            [['name', 'email', 'ip', 'text'], 'safe']
         ];
     }
 
@@ -42,8 +43,12 @@ class ReviewsSearch extends Reviews
     {
         $query = Reviews::find();
 
+        if (isset($params['front'])) {
+            $query->where(['is_active' => 1])->orWhere(['ip' => Yii::$app->request->userIP]);
+        }
         $dataProvider = new ActiveDataProvider([
-            'query' => $query
+            'query' => $query,
+            'sort'=> ['defaultOrder' => ['created_at' => SORT_ASC]]
         ]);
         $this->load($params);
 
@@ -56,6 +61,7 @@ class ReviewsSearch extends Reviews
             'FROM_UNIXTIME(created_at, "%d.%m.%Y")' => $this->created_at
         ]);
         $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'ip', $this->ip])
             ->andFilterWhere(['like', 'text', $this->text]);
 

@@ -42,7 +42,7 @@ $fieldOptions2 = [
             <div class="col-xs-8">
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-4" style="padding-left:0">
                 <?= Html::submitButton(Yii::t('main', 'Login'), ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
             </div>
         </div>

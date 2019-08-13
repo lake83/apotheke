@@ -1,7 +1,7 @@
 <?php
 $config = [
     'id' => 'basic',
-    'name' => Yii::t('main', 'Pharmacy'),
+    'name' => 'Apotheke',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['app\config\settings'],
     'language' => 'de-DE',
@@ -26,7 +26,7 @@ $config = [
             'class' => 'app\components\User',
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
-            'loginUrl' => ['site/login']
+            'loginUrl' => ['site/admin']
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -51,7 +51,7 @@ $config = [
                 'class' => 'yii\web\UrlNormalizer'
             ],
             'rules' => [
-                ['pattern' => '<action:(contact|error|cart)>', 'route' => 'site/<action>', 'suffix' => '.html'],
+                ['pattern' => '<action:(contact|error|cart|reviews)>', 'route' => 'site/<action>', 'suffix' => '.html'],
                 ['pattern' => '<slug>', 'route' => 'site/page', 'suffix' => '.html'],
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 '' => 'site/index',

@@ -17,6 +17,8 @@ use app\components\MainGridWidget;
 use yii\caching\TagDependency;
 use yii\web\Response;
 use yii\data\ArrayDataProvider;
+use app\models\Reviews;
+use app\models\ReviewsSearch;
 
 class SiteController extends Controller
 {
@@ -219,5 +221,29 @@ class SiteController extends Controller
             'allModels' => Yii::$app->session->get('cart')['products'],
             'pagination' => false
         ])]);
+    }
+    
+    /**
+     * Displays reviews page
+     *
+     * @return string
+     */
+    public function actionReviews()
+    {
+        $model = new Reviews;
+        $searchModel = new ReviewsSearch;
+        $request = Yii::$app->request;
+
+        if ($request->isAjax && $model->load($request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return \yii\widgets\ActiveForm::validate($model);
+        }
+        if ($model->load($request->post()) && $model->save()) {
+            return $this->refresh();
+        }
+        return $this->render('reviews', [
+            'model' => $model,
+            'dataProvider' => $searchModel->search(['front' => true])
+        ]);
     }
 }

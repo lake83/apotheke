@@ -25,6 +25,7 @@ $this->title = $model->name;
         'attributes' => [
             'id',
             'name',
+            'email:email',
             'ip',
             'text:ntext',
             'is_active:boolean',

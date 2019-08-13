@@ -20,13 +20,14 @@ echo GridView::widget([
         ['class' => 'yii\grid\SerialColumn'],
 
             'name',
+            'email:email',
             'ip',
             SiteHelper::is_active($searchModel),
             SiteHelper::created_at($searchModel),
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}{delete}',
+                'template' => '{view}{delete}',
                 'options' => ['width' => '50px']
             ]
         ]

@@ -12,6 +12,7 @@ class m190810_101526_reviews extends Migration
         $this->createTable('reviews', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
+            'email' => $this->string(100)->notNull(),
             'ip' => $this->string(30)->notNull(),
             'text' => $this->text()->notNull(),
             'is_active' => $this->boolean()->defaultValue(1),
