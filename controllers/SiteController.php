@@ -163,7 +163,6 @@ class SiteController extends Controller
         $request = Yii::$app->request;
         
         if ($request->isAjax && ($price = $request->post('price')) && ($name = $request->post('name'))) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
             $session = Yii::$app->session;
             
             if (!$session->has('cart')) {
@@ -180,7 +179,7 @@ class SiteController extends Controller
             
             $session->set('cart', $cart);
             
-            return ['price' => round($cart['sum'], 2), 'quantity' => $cart['quantity']];
+            return $this->redirect(['cart']);
         }
     }
     
