@@ -19,6 +19,7 @@ use yii\web\Response;
 use yii\data\ArrayDataProvider;
 use app\models\Reviews;
 use app\models\ReviewsSearch;
+use app\models\Products;
 
 class SiteController extends Controller
 {
@@ -42,8 +43,7 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
-                    'buy' => ['post']
+                    'logout' => ['post']
                 ]
             ],
             'traffic' => [
@@ -160,9 +160,7 @@ class SiteController extends Controller
      */
     public function actionBuy($id)
     {
-        $request = Yii::$app->request;
-        
-        if ($request->isAjax && ($price = $request->post('price')) && ($name = $request->post('name'))) {
+        if ($product = Products::findOne($id)) {
             $session = Yii::$app->session;
             
             if (!$session->has('cart')) {
@@ -170,11 +168,11 @@ class SiteController extends Controller
             }
             $cart = $session->get('cart');
             $cart['products'][$id]['id'] = $id;
-            $cart['products'][$id]['name'] = $name;
-            $cart['products'][$id]['price'] = $price;
+            $cart['products'][$id]['name'] = $product->name;
+            $cart['products'][$id]['price'] = $product->price;
             $cart['products'][$id]['quantity']++;
              
-            $cart['sum']+= $price;
+            $cart['sum']+= $product->price;
             $cart['quantity']++;
             
             $session->set('cart', $cart);

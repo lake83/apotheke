@@ -28,9 +28,7 @@ echo GridView::widget([
             'buttons' => [
                 'buy' => function ($url, $model, $key) {
                     return Html::a('<span class="glyphicon glyphicon-gift"></span>', ['site/buy', 'id' => $model->id], [
-                        'title' => Yii::t('main', 'Buy'),
-                        'data-method' => 'POST',
-                        'class' => 'buy-product'
+                        'title' => Yii::t('main', 'Buy')
                     ]);
                 }
             ],
