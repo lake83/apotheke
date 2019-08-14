@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\Json;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "orders".
@@ -75,15 +76,24 @@ class Orders extends \yii\db\ActiveRecord
             ['cookie_id', 'string', 'max' => 50],
             ['products', 'string'],
             ['status', 'default', 'value' => self::STATUS_NEW],
-            ['coupon', function ($attribute, $params, $validator) {
-                $coupon = Coupon::find()->select(['id'])->where(['code' => $this->$attribute, 'is_active' => 1])
-                    ->andWhere(['<', 'date_from', time()])->andWhere(['>', 'date_to', time()])->scalar();
-                if (!$coupon) {
-                    $this->addError($attribute, Yii::t('main', 'Invalid coupon code.'));
-                } else {
-                    $this->coupon_id = $coupon;
+            ['coupon', 'string', 'whenClient' => "function (attribute, value) {
+                if (value != '') {
+                    deferred.push($.post('" . Url::to(['shop/check-coupon']) . "', {number: value}).done(function(data) {
+                        if (data.status == 'error') {
+                            messages.push(data.message);
+                        } else {
+                            $('a.cart strong').text(data.sum);
+                            $('td.total').text(data.sum + ' €');
+                            $('#orders-coupon_id').val(data.coupon_id);
+                            return true;
+                        }
+                    }));
                 }
-            }]
+                $('a.cart strong').text(" . ($sum = Yii::$app->session->get('cart')['sum']) . ");
+                $('td.total').text(" . $sum . " + ' €');
+                $('#orders-coupon_id').val('');
+                return false;
+            }"]
         ];
     }
 
@@ -137,7 +147,7 @@ class Orders extends \yii\db\ActiveRecord
                     $sum = $sum - (($this->coupon->value*$sum)/100);
                 }
             }
-            $this->sum = $sum;
+            $this->sum = round($sum, 2);
             $this->host = $request->absoluteUrl;
             $this->referrer = $request->referrer;
             $this->ip = $request->userIP;

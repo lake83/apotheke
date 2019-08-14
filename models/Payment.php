@@ -4,7 +4,6 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\caching\TagDependency;
 
 /**
  * This is the model class for table "payment".
@@ -50,26 +49,6 @@ class Payment extends \yii\db\ActiveRecord
             'page' => Yii::t('app', 'Page'),
             'is_active' => Yii::t('app', 'Active')
         ];
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        TagDependency::invalidate(Yii::$app->cache, 'order');
-        
-        return parent::afterSave($insert, $changedAttributes);
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public function afterDelete()
-    {
-        TagDependency::invalidate(Yii::$app->cache, 'order');
-        
-        parent::afterDelete();
     }
     
     /**

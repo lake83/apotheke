@@ -4,9 +4,8 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\{Controller, NotFoundHttpException};
-use app\models\{Products, Orders, Payment};
+use app\models\{Products, Orders, Payment, Coupon};
 use yii\data\ArrayDataProvider;
-use yii\caching\TagDependency;
 use yii\helpers\Json;
 
 class ShopController extends Controller
@@ -101,21 +100,15 @@ class ShopController extends Controller
         $model = new Orders;
         $request = Yii::$app->request;
 
-        if ($request->isAjax && $model->load($request->post())) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return \yii\widgets\ActiveForm::validate($model);
-        }
         if ($model->load($request->post()) && $model->save()) {
-            return $this->render('page_order', ['content' => Yii::$app->cache->getOrSet('page_order_' . $model->payment_id, function() use ($model){
-                $page = str_replace('{{user_data}}', $this->renderPartial('user_data', ['model' => $model]), $model->payment->page);
-                $page = str_replace('{{order}}', $this->renderPartial('order_data', [
-                    'dataProvider' => new ArrayDataProvider([
-                        'allModels' => Json::decode($model->products),
-                        'pagination' => false
-                    ])
-                ]), $page);
-                return $page;
-            }, 0, new TagDependency(['tags' => 'order']))]);
+            $content = str_replace('{{user_data}}', $this->renderPartial('user_data', ['model' => $model]), $model->payment->page);
+            $content = str_replace('{{order}}', $this->renderPartial('order_data', [
+                'dataProvider' => new ArrayDataProvider([
+                    'allModels' => Json::decode($model->products),
+                    'pagination' => false
+                ])
+            ]), $content);
+            return $this->render('page_order', ['content' => $content]);
         }
         return $this->render('order', [
             'model' => $model,
@@ -124,5 +117,34 @@ class ShopController extends Controller
                 'pagination' => false
             ])
         ]);
+    }
+    
+    /**
+     * Use coupon on order page
+     *
+     * @return string
+     */
+    public function actionCheckCoupon()
+    {
+        $request = Yii::$app->request;
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        if ($request->isAjax && ($number = $request->post('number'))) {
+            $coupon = Coupon::find()->select(['id', 'type', 'value'])->where(['code' => $number, 'is_active' => 1])
+                ->andWhere(['<', 'date_from', time()])->andWhere(['>', 'date_to', time()])->asArray()->one();
+            if (!$coupon) {
+                return ['status' => 'error', 'message' => Yii::t('main', 'Invalid coupon code.')];
+            } else {
+                $cart = $this->session->get('cart');
+                $sum = $cart['sum'];
+                
+                if ($coupon['type'] == Coupon::TYPE_SUM) {
+                    $sum-= $coupon['value'];
+                } else {
+                    $sum = $sum - (($coupon['value']*$sum)/100);
+                }
+                return ['status' => 'success', 'coupon_id' => $coupon['id'], 'sum' => round($sum, 2)];
+            }
+        }
     }
 }

@@ -50,6 +50,7 @@ $this->title = Yii::t('main', 'Order');
            },
            'footer' => Yii::$app->session['cart']['sum'] . ' €',
            'footerOptions' => [
+               'class' => 'total',
                'colspan' => 2
            ]
         ]
@@ -60,13 +61,15 @@ $this->title = Yii::t('main', 'Order');
 
 <?php $form = ActiveForm::begin(['id' => 'add-review-form', 'layout' => 'horizontal']); ?>
 
+<?= $form->field($model, 'coupon')->textInput(['maxlength' => true]) ?>
+
+<?= Html::activeHiddenInput($model, 'coupon_id') ?>
+
 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
 <?= $form->field($model, 'phone')->widget(\yii\widgets\MaskedInput::className(), ['mask' => Yii::$app->params['phone_mask']]) ?>
 
 <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
-
-<?= $form->field($model, 'coupon', ['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
 
 <?= $form->field($model, 'delivery_id')->radioList(Delivery::getAll()) ?>
 

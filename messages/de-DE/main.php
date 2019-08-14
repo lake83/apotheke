@@ -61,7 +61,7 @@ return [
     'Phone' => 'Telefon',
     'Address' => 'Adresse',
     'Number' => 'Nummer',
-    'Coupon' => 'Coupon',
+    'Coupon' => 'Gutscheincode',
     'Delivery' => 'Lieferung',
     'Payment' => 'Zahlung',
     'Checkout' => 'Auschecken',
