@@ -12,6 +12,8 @@ $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'image')->widget(\app\components\FilemanagerInput::className()) ?>
+    
+    <?= $form->field($model, 'page')->widget(\app\components\RedactorTinymce::className()) ?>
 
     <?= $form->field($model, 'is_active')->checkbox() ?>
 

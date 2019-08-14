@@ -17,10 +17,10 @@ class OrdersSearch extends Orders
     public function rules()
     {
         return [
-            [['id', 'product_id', 'coupon_id', 'delivery_id', 'payment_id', 'status'], 'integer'],
+            [['id', 'coupon_id', 'delivery_id', 'payment_id', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'date', 'format' => 'd.m.Y'],
-            [['name', 'phone', 'address', 'host', 'referrer', 'ip', 'agent', 'cookie_id', 'language'], 'safe'],
-            [['sum', 'delivery_sum'], 'number'],
+            [['name', 'products', 'number', 'phone', 'address', 'host', 'referrer', 'ip', 'agent', 'cookie_id', 'language'], 'safe'],
+            [['sum', 'delivery_sum'], 'number']
         ];
     }
 
@@ -53,7 +53,6 @@ class OrdersSearch extends Orders
         }
         $query->andFilterWhere([
             'id' => $this->id,
-            'product_id' => $this->product_id,
             'sum' => $this->sum,
             'coupon_id' => $this->coupon_id,
             'delivery_id' => $this->delivery_id,
@@ -64,6 +63,8 @@ class OrdersSearch extends Orders
             'FROM_UNIXTIME(updated_at, "%d.%m.%Y")' => $this->updated_at
         ]);
         $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'products', $this->products])
+            ->andFilterWhere(['like', 'number', $this->number])
             ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'address', $this->address])
             ->andFilterWhere(['like', 'host', $this->host])

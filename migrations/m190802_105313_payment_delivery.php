@@ -18,6 +18,7 @@ class m190802_105313_payment_delivery extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
             'image' => $this->text()->notNull(),
+            'page' => $this->text()->notNull(),
             'is_active' => $this->boolean()->defaultValue(1)
         ], $tableOptions);
         

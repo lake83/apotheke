@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\models\Coupon;
+use yii\data\ArrayDataProvider;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Orders */
@@ -25,18 +26,32 @@ $this->title = $model->name;
         'model' => $model,
         'attributes' => [
             'id',
+            'number',
             'name',
             'phone',
             'address',
             [
-                'attribute' => 'product_id',
-                'value' => $model->product->name
+                'attribute' => 'products',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return $this->render('_order_table', [
+                        'dataProvider' => new ArrayDataProvider([
+                            'allModels' => $model->products,
+                            'pagination' => false
+                        ])
+                    ]);
+                }
             ],
-            'sum',
             [
                 'attribute' => 'coupon_id',
-                'value' => $model->coupon->code . ' ' . Yii::t('app', 'discount') . ' ' . $model->coupon->value .
-                    $model->coupon->type == Coupon::TYPE_PERCENT ? ' %' : ' €'
+                'format' => 'raw',
+                'value' => $model->coupon_id ? ('<b>' . $model->couponData->code . '</b> ' . Yii::t('app', 'discount') . ' ' . $model->couponData->value .
+                    ($model->couponData->type == Coupon::TYPE_PERCENT ? ' %' : ' €')) : null
+            ],
+            [
+                'attribute' => 'sum',
+                'format' => 'raw',
+                'value' => '<b>' . $model->sum . ' €</b>'
             ],
             [
                 'attribute' => 'delivery_id',

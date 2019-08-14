@@ -51,7 +51,8 @@ $config = [
                 'class' => 'yii\web\UrlNormalizer'
             ],
             'rules' => [
-                ['pattern' => '<action:(contact|error|cart|reviews)>', 'route' => 'site/<action>', 'suffix' => '.html'],
+                ['pattern' => '<action:(contact|error|reviews)>', 'route' => 'site/<action>', 'suffix' => '.html'],
+                ['pattern' => '<action:(cart|order)>', 'route' => 'shop/<action>', 'suffix' => '.html'],
                 ['pattern' => '<slug>', 'route' => 'site/page', 'suffix' => '.html'],
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 '' => 'site/index',

@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "orders".
@@ -12,7 +13,8 @@ use yii\behaviors\TimestampBehavior;
  * @property string $name
  * @property string $phone
  * @property string $address
- * @property int $product_id
+ * @property string $products
+ * @property string $number
  * @property double $sum
  * @property int $coupon_id
  * @property int $delivery_id
@@ -34,6 +36,8 @@ class Orders extends \yii\db\ActiveRecord
     const STATUS_PROCESSING = 2;
     const STATUS_CLOSED = 3;
     const STATUS_CANSELED = 4;
+    
+    public $coupon;
     
     /**
      * {@inheritdoc}
@@ -59,15 +63,27 @@ class Orders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'phone', 'address', 'product_id', 'sum', 'delivery_id', 'delivery_sum', 'payment_id'], 'required'],
-            [['product_id', 'coupon_id', 'delivery_id', 'payment_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['name', 'phone', 'address', 'delivery_id', 'payment_id'], 'required'],
+            [['coupon_id', 'delivery_id', 'payment_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['sum', 'delivery_sum'], 'number'],
+            [['coupon_id', 'delivery_sum'], 'default', 'value' => 0],
             [['name', 'address', 'referrer'], 'string', 'max' => 255],
-            [['phone'], 'string', 'max' => 20],
+            ['number', 'string', 'max' => 12],
+            ['phone', 'string', 'max' => 20],
             [['host', 'agent'], 'string', 'max' => 100],
             [['ip', 'language'], 'string', 'max' => 30],
-            [['cookie_id'], 'string', 'max' => 50],
-            ['status', 'default', 'value' => self::STATUS_NEW]
+            ['cookie_id', 'string', 'max' => 50],
+            ['products', 'string'],
+            ['status', 'default', 'value' => self::STATUS_NEW],
+            ['coupon', function ($attribute, $params, $validator) {
+                $coupon = Coupon::find()->select(['id'])->where(['code' => $this->$attribute, 'is_active' => 1])
+                    ->andWhere(['<', 'date_from', time()])->andWhere(['>', 'date_to', time()])->scalar();
+                if (!$coupon) {
+                    $this->addError($attribute, Yii::t('main', 'Invalid coupon code.'));
+                } else {
+                    $this->coupon_id = $coupon;
+                }
+            }]
         ];
     }
 
@@ -78,15 +94,17 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => Yii::t('app', 'Name'),
-            'phone' => Yii::t('app', 'Phone'),
-            'address' => Yii::t('app', 'Address'),
-            'product_id' => Yii::t('app', 'Product'),
+            'name' => Yii::t('main', 'Name'),
+            'phone' => Yii::t('main', 'Phone'),
+            'address' => Yii::t('main', 'Address'),
+            'products' => Yii::t('app', 'Products'),
+            'number' => Yii::t('app', 'Number'),
             'sum' => Yii::t('app', 'Sum'),
             'coupon_id' => Yii::t('app', 'Coupon'),
-            'delivery_id' => Yii::t('app', 'Delivery'),
+            'coupon' => Yii::t('main', 'Coupon'),
+            'delivery_id' => Yii::t('main', 'Delivery'),
             'delivery_sum' => Yii::t('app', 'Delivery Sum'),
-            'payment_id' => Yii::t('app', 'Payment'),
+            'payment_id' => Yii::t('main', 'Payment'),
             'host' => Yii::t('app', 'Host'),
             'referrer' => Yii::t('app', 'Referrer'),
             'ip' => 'IP',
@@ -95,7 +113,7 @@ class Orders extends \yii\db\ActiveRecord
             'language' => Yii::t('app', 'Language'),
             'status' => Yii::t('app', 'Status'),
             'created_at' => Yii::t('app', 'Created'),
-            'updated_at' => Yii::t('app', 'Updated'),
+            'updated_at' => Yii::t('app', 'Updated')
         ];
     }
     
@@ -106,7 +124,20 @@ class Orders extends \yii\db\ActiveRecord
     {
         if ($insert) {
             $request = Yii::$app->request;
+            $cart = Yii::$app->session->get('cart');
+            $sum = $cart['sum'];
             
+            $this->products = Json::encode($cart['products']);
+            $this->number = mt_rand(100000, 999999);
+            
+            if (!empty($this->coupon_id) && ($this->coupon = Coupon::findOne($this->coupon_id))) {
+                if ($this->coupon->type == Coupon::TYPE_SUM) {
+                    $sum-= $this->coupon->value;
+                } else {
+                    $sum = $sum - (($this->coupon->value*$sum)/100);
+                }
+            }
+            $this->sum = $sum;
             $this->host = $request->absoluteUrl;
             $this->referrer = $request->referrer;
             $this->ip = $request->userIP;
@@ -118,17 +149,35 @@ class Orders extends \yii\db\ActiveRecord
     }
     
     /**
-     * @return \yii\db\ActiveQuery
+     * @inheritdoc
      */
-    public function getProduct()
+    public function afterSave($insert, $changedAttributes)
     {
-        return $this->hasOne(Products::className(), ['id' => 'product_id']);
+        if ($insert) {
+            Yii::$app->session->remove('cart');
+            
+            if (!empty($this->coupon_id)) {
+                $this->coupon->is_active = 0;
+                $this->coupon->save();
+            }
+        }
+        return parent::afterSave($insert, $changedAttributes);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function afterFind()
+    {
+        $this->products = Json::decode($this->products);
+        
+        parent::afterFind();
     }
     
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCoupon()
+    public function getCouponData()
     {
         return $this->hasOne(Coupon::className(), ['id' => 'coupon_id']);
     }

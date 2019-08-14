@@ -23,9 +23,13 @@ echo GridView::widget([
             'name',
             'phone',
             [
-                'attribute' => 'product_id',
+                'attribute' => 'products',
                 'value' => function ($model, $index, $widget) {
-                    return $model->product->name;
+                    $names = [];
+                    foreach ($model->products as $product) {
+                        $names[] = $product['name'];
+                    }
+                    return implode(',', $names);
                 }
             ],
             [

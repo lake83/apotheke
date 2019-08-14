@@ -8,6 +8,11 @@ use yii\helpers\Html;
 use yii\widgets\Pjax;
 
 $this->title = Yii::t('main', 'Shopping cart');
+
+$this->registerJs("
+$('#cart').on('pjax:success', function() {
+    $.pjax.reload({container: '#menu-cart'});
+});");
 ?>
 
 <h1><?= $this->title ?></h1>
@@ -35,11 +40,11 @@ echo GridView::widget([
            'format' => 'raw',
            'header' => Yii::t('main', 'Amount'),
            'value' => function ($model, $index, $widget) {
-               return ($model['quantity']>1 ? Html::a('<span class="glyphicon glyphicon-minus"></span> ', ['site/cart', 'id' => $model['id'], 'action' => 'minus'], [
+               return ($model['quantity']>1 ? Html::a('<span class="glyphicon glyphicon-minus"></span> ', ['shop/cart', 'id' => $model['id'], 'action' => 'minus'], [
                         'title' => Yii::t('main', 'subtract'),
                         'data-method' => 'POST',
                         'data-pjax' => 1
-                    ]) : '') . $model['quantity'] . Html::a(' <span class="glyphicon glyphicon-plus"></span>', ['site/cart', 'id' => $model['id'], 'action' => 'plus'], [
+                    ]) : '') . $model['quantity'] . Html::a(' <span class="glyphicon glyphicon-plus"></span>', ['shop/cart', 'id' => $model['id'], 'action' => 'plus'], [
                         'title' => Yii::t('main', 'add'),
                         'data-method' => 'POST',
                         'data-pjax' => 1
@@ -56,7 +61,7 @@ echo GridView::widget([
            'attribute' => 'price',
            'header' => Yii::t('main', 'Price'),
            'value' => function ($model, $index, $widget) {
-               return $model['price'];
+               return $model['price'] . ' €';
            },
            'footer' => (Yii::$app->session['cart']['sum']?:'0.00') . ' €',
            'footerOptions' => [
@@ -69,7 +74,7 @@ echo GridView::widget([
             'template' => '{remove}',
             'buttons' => [
                 'remove' => function ($url, $model, $key) {
-                    return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['site/cart', 'id' => $model['id'], 'action' => 'remove'], [
+                    return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['shop/cart', 'id' => $model['id'], 'action' => 'remove'], [
                         'title' => Yii::t('main', 'Remove product'),
                         'data-method' => 'POST',
                         'data-pjax' => 1
@@ -84,4 +89,8 @@ echo GridView::widget([
     ]
 ]);
 Pjax::end();
+
+if (Yii::$app->session->get('cart')['quantity'] > 0) {
+    echo Html::a(Yii::t('main', 'To order'), ['shop/order'], ['class' => 'btn btn-primary pull-right']);
+}
 ?>

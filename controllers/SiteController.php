@@ -3,23 +3,12 @@
 namespace app\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\Contact;
-use app\components\SiteHelper;
-use app\components\LogTraffic;
-use app\models\Pages;
-use yii\web\NotFoundHttpException;
-use app\components\ProductGridWidget;
-use app\components\MainGridWidget;
+use yii\filters\{AccessControl, VerbFilter};
+use app\models\{LoginForm, Contact, Reviews, ReviewsSearch, Pages, Products};
+use app\components\{SiteHelper, LogTraffic, ProductGridWidget, MainGridWidget};
+use yii\web\{NotFoundHttpException, Response, Controller};
 use yii\caching\TagDependency;
-use yii\web\Response;
-use yii\data\ArrayDataProvider;
-use app\models\Reviews;
-use app\models\ReviewsSearch;
-use app\models\Products;
+use yii\data\ActiveDataProvider;
 
 class SiteController extends Controller
 {
@@ -80,7 +69,13 @@ class SiteController extends Controller
             if (!$model = Pages::findOne(['slug' => 'main'])) {
                 throw new NotFoundHttpException(Yii::t('main', 'Page not found.'));
             }
-            $model->content = str_replace('{{grid}}', MainGridWidget::widget(), $model->content);
+            $model->content = str_replace('{{grid}}', $this->renderPartial('main', [
+                'dataProvider' => new ActiveDataProvider([
+                    'query' => Pages::find()->select(['slug', 'name', 'image'])->where(['is_product' => 1, 'is_active' => 1])
+                        ->limit(Yii::$app->params['products_main'])->orderBy('position ASC'),
+                    'pagination' => false
+                ])
+            ]), $model->content);
             return $model;
         }, 0, new TagDependency(['tags' => 'pages']))]);
     }
@@ -98,7 +93,11 @@ class SiteController extends Controller
                 throw new NotFoundHttpException(Yii::t('main', 'Page not found.'));
             }
             $model->content = preg_replace_callback('/{{product (.*?)}}/', function ($matches) {
-                return ProductGridWidget::widget(['number' => $matches[1]]);
+                return $this->renderPartial('product', [
+                    'dataProvider' => new ActiveDataProvider([
+                        'query' => Products::find()->where('`number` IN(' . $matches[1] . ')')->andWhere(['is_active' => 1])
+                    ])
+                ]);
             }, $model->content);
             return $model;
         }, 0, new TagDependency(['tags' => 'pages']))]);
@@ -150,74 +149,6 @@ class SiteController extends Controller
             return $this->refresh();
         }
         return $this->render('contact', ['model' => $model]);
-    }
-    
-    /**
-     * Add product to cart
-     *
-     * @param integer $id product ID
-     * @return string
-     */
-    public function actionBuy($id)
-    {
-        if ($product = Products::findOne($id)) {
-            $session = Yii::$app->session;
-            
-            if (!$session->has('cart')) {
-                $session->set('cart', ['sum' => '0.00', 'quantity' => 0, 'products' => []]);
-            }
-            $cart = $session->get('cart');
-            $cart['products'][$id]['id'] = $id;
-            $cart['products'][$id]['name'] = $product->name;
-            $cart['products'][$id]['price'] = $product->price;
-            $cart['products'][$id]['quantity']++;
-             
-            $cart['sum']+= $product->price;
-            $cart['quantity']++;
-            
-            $session->set('cart', $cart);
-            
-            return $this->redirect(['cart']);
-        }
-    }
-    
-    /**
-     * Displays shopping cart
-     *
-     * @return string
-     */
-    public function actionCart()
-    {
-        $request = Yii::$app->request;
-        
-        if ($request->isPost && ($id = $request->get('id')) && ($action = $request->get('action'))) {
-            $session = Yii::$app->session;
-            $cart = $session->get('cart');
-            
-            if ($action == 'plus') {
-                $cart['products'][$id]['quantity']++;
-                $cart['sum']+= $cart['products'][$id]['price'];
-                $cart['quantity']++;
-            } elseif ($action == 'minus') {
-                $cart['products'][$id]['quantity']--;
-                $cart['sum']-= $cart['products'][$id]['price'];
-                $cart['quantity']--;
-            } else {
-                $cart['quantity']-= $cart['products'][$id]['quantity'];
-                
-                if ($cart['quantity'] == 0) {
-                    $cart['sum'] = '0.00';
-                } else {
-                    $cart['sum']-= $cart['products'][$id]['price'] * $cart['products'][$id]['quantity'];
-                }
-                unset($cart['products'][$id]);
-            }
-            $session->set('cart', $cart);
-        }
-        return $this->render('cart', ['dataProvider' => new ArrayDataProvider([
-            'allModels' => Yii::$app->session->get('cart')['products'],
-            'pagination' => false
-        ])]);
     }
     
     /**

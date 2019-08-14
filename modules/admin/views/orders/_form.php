@@ -16,12 +16,12 @@ $options = ['prompt' => Yii::t('app', '- choose -')];
 $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'number')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'phone')->widget(MaskedInput::className(), ['mask' => Yii::$app->params['phone_mask']]) ?>
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'product_id')->dropDownList(Products::getAll(), $options) ?>
 
     <?= $form->field($model, 'sum')->textInput() ?>
 

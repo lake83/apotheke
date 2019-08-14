@@ -32,7 +32,8 @@ class Delivery extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['image'], 'string'],
-            [['free_sum'], 'number'],
+            ['free_sum', 'number'],
+            ['free_sum', 'default', 'value' => 0],
             [['is_active'], 'integer'],
             [['name'], 'string', 'max' => 255]
         ];

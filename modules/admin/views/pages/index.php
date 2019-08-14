@@ -20,6 +20,8 @@ $this->title = Yii::t('app', 'Pages');
    <div>
        <p>{{grid}} - <?= Yii::t('app', 'Products blocks on main page.') ?></p>
        <p>{{product 10001,10002}} - <?= Yii::t('app', 'Products grid on product page. Contains comma-separated product numbers.') ?></p>
+       <p>{{user_data}} - <?= Yii::t('app', 'User information on the checkout page.') ?></p>
+       <p>{{order}} - <?= Yii::t('app', 'Ordering information on the checkout page.') ?></p>
    </div>
 </div>
 

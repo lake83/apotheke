@@ -18,7 +18,7 @@ class PaymentSearch extends Payment
     {
         return [
             [['id', 'is_active'], 'integer'],
-            [['name', 'image'], 'safe']
+            [['name', 'image', 'page'], 'safe']
         ];
     }
 
@@ -42,7 +42,7 @@ class PaymentSearch extends Payment
         $query = Payment::find();
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $query
         ]);
         $this->load($params);
 
@@ -54,7 +54,8 @@ class PaymentSearch extends Payment
             'is_active' => $this->is_active,
         ]);
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'image', $this->image]);
+            ->andFilterWhere(['like', 'image', $this->image])
+            ->andFilterWhere(['like', 'page', $this->page]);
 
         return $dataProvider;
     }
