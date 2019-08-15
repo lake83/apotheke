@@ -31,6 +31,7 @@ $this->title = Yii::t('app', 'Delivery');
                 }
             ],
             'name',
+            'price',
             'free_sum',
             SiteHelper::is_active($searchModel),
 

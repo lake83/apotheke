@@ -8,8 +8,14 @@ echo  \yii\widgets\DetailView::widget([
         'attributes' => [
             'number',
             'name',
+            'surname',
             'phone',
-            'address',
+            'email',
+            'street',
+            'city',
+            'region',
+            'postcode',
+            'comment:ntext',
             [
                 'attribute' => 'payment_id',
                 'value' => $model->payment->name
@@ -18,11 +24,15 @@ echo  \yii\widgets\DetailView::widget([
                 'attribute' => 'delivery_id',
                 'value' => $model->delivery->name
             ],
-            'delivery_sum',
+            [
+                'attribute' => 'delivery_sum',
+                'format' => 'raw',
+                'value' => '<b>' . $model->delivery_sum  . ' €</b>'
+            ],
             [
                 'attribute' => 'coupon_id',
                 'format' => 'raw',
-                'value' => $model->coupon_id ? ('<b>' . $model->couponData->code . '</b> ' . Yii::t('app', 'discount') . ' ' . $model->couponData->value .
+                'value' => $model->coupon_id ? ('<b>' . $model->couponData->code . '</b> ' . Yii::t('main', 'discount') . ' ' . $model->couponData->value .
                     ($model->couponData->type == \app\models\Coupon::TYPE_PERCENT ? ' %' : ' €')) : null
             ],
             [

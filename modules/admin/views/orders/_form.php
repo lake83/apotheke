@@ -17,11 +17,21 @@ $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     
+    <?= $form->field($model, 'surname')->textInput(['maxlength' => true]) ?>
+    
     <?= $form->field($model, 'number')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'phone')->widget(MaskedInput::className(), ['mask' => Yii::$app->params['phone_mask']]) ?>
 
-    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'street')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'region')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'postcode')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'sum')->textInput() ?>
 
@@ -30,6 +40,8 @@ $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
     <?= $form->field($model, 'delivery_sum')->textInput() ?>
 
     <?= $form->field($model, 'payment_id')->dropDownList(Payment::getAll(), $options) ?>
+    
+    <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'status')->dropDownList($model->getStatuses(), $options) ?>
 

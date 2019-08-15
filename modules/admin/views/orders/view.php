@@ -28,8 +28,13 @@ $this->title = $model->name;
             'id',
             'number',
             'name',
+            'surname',
             'phone',
-            'address',
+            'email:email',
+            'street',
+            'city',
+            'region',
+            'postcode',
             [
                 'attribute' => 'products',
                 'format' => 'raw',
@@ -49,19 +54,24 @@ $this->title = $model->name;
                     ($model->couponData->type == Coupon::TYPE_PERCENT ? ' %' : ' €')) : null
             ],
             [
+                'attribute' => 'delivery_id',
+                'value' => $model->delivery->name
+            ],
+            [
+                'attribute' => 'delivery_sum',
+                'format' => 'raw',
+                'value' => '<b>' . $model->delivery_sum  . ' €</b>'
+            ],
+            [
                 'attribute' => 'sum',
                 'format' => 'raw',
                 'value' => '<b>' . $model->sum . ' €</b>'
             ],
             [
-                'attribute' => 'delivery_id',
-                'value' => $model->delivery->name
-            ],
-            'delivery_sum',
-            [
                 'attribute' => 'payment_id',
                 'value' => $model->payment->name
             ],
+            'comment:ntext',
             [
                 'attribute' => 'status',
                 'value' => $model->getStatuses($model->status)

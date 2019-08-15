@@ -67,13 +67,25 @@ $this->title = Yii::t('main', 'Order');
 
 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+<?= $form->field($model, 'surname')->textInput(['maxlength' => true]) ?>
+
 <?= $form->field($model, 'phone')->widget(\yii\widgets\MaskedInput::className(), ['mask' => Yii::$app->params['phone_mask']]) ?>
 
-<?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-<?= $form->field($model, 'delivery_id')->radioList(Delivery::getAll()) ?>
+<?= $form->field($model, 'street')->textInput(['maxlength' => true]) ?>
+
+<?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
+    
+<?= $form->field($model, 'region')->textInput(['maxlength' => true]) ?>
+    
+<?= $form->field($model, 'postcode')->textInput(['maxlength' => true]) ?>
+
+<?= $form->field($model, 'delivery_id')->radioList(Delivery::getAll(), ['style' => 'white-space: nowrap;']) ?>
 
 <?= $form->field($model, 'payment_id')->radioList(Payment::getAll()) ?>
+
+<?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 
 <?= Html::submitButton(Yii::t('main', 'Complete order'), ['class' => 'btn btn-primary col-md-offset-3 mb-5']) ?>
 

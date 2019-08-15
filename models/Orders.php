@@ -12,8 +12,13 @@ use yii\helpers\Url;
  *
  * @property int $id
  * @property string $name
+ * @property string $surname
  * @property string $phone
- * @property string $address
+ * @property string $email
+ * @property string $street
+ * @property string $city
+ * @property string $region
+ * @property string $postcode
  * @property string $products
  * @property string $number
  * @property double $sum
@@ -21,6 +26,7 @@ use yii\helpers\Url;
  * @property int $delivery_id
  * @property double $delivery_sum
  * @property int $payment_id
+ * @property string $comment
  * @property string $host
  * @property string $referrer
  * @property string $ip
@@ -64,18 +70,23 @@ class Orders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'phone', 'address', 'delivery_id', 'payment_id'], 'required'],
+            [['name', 'surname', 'phone', 'email', 'street', 'city', 'region', 'postcode', 'delivery_id', 'payment_id'], 'required'],
             [['coupon_id', 'delivery_id', 'payment_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['sum', 'delivery_sum'], 'number'],
+            ['email', 'email'],
+            ['number', 'unique'],
             [['coupon_id', 'delivery_sum'], 'default', 'value' => 0],
-            [['name', 'address', 'referrer'], 'string', 'max' => 255],
-            ['number', 'string', 'max' => 12],
+            [['name', 'surname', 'street', 'city', 'region', 'referrer'], 'string', 'max' => 255],
+            [['postcode', 'number'], 'string', 'max' => 12],
             ['phone', 'string', 'max' => 20],
-            [['host', 'agent'], 'string', 'max' => 100],
+            [['email', 'host', 'agent'], 'string', 'max' => 100],
             [['ip', 'language'], 'string', 'max' => 30],
             ['cookie_id', 'string', 'max' => 50],
-            ['products', 'string'],
+            [['products', 'comment'], 'string'],
             ['status', 'default', 'value' => self::STATUS_NEW],
+            [['name', 'surname', 'street', 'city', 'region', 'postcode', 'comment'], 'filter', 'filter' => function ($value) {
+                return \yii\helpers\HtmlPurifier::process($value);
+            }],
             ['coupon', 'string', 'whenClient' => "function (attribute, value) {
                 if (value != '') {
                     deferred.push($.post('" . Url::to(['shop/check-coupon']) . "', {number: value}).done(function(data) {
@@ -105,16 +116,22 @@ class Orders extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => Yii::t('main', 'Name'),
+            'surname' => Yii::t('main', 'Surname'),
             'phone' => Yii::t('main', 'Phone'),
-            'address' => Yii::t('main', 'Address'),
+            'email' => 'E-Mail',
+            'street' => Yii::t('main', 'Street'),
+            'city' => Yii::t('main', 'City'),
+            'region' => Yii::t('main', 'Region'),
+            'postcode' => Yii::t('main', 'Postcode'),
             'products' => Yii::t('app', 'Products'),
-            'number' => Yii::t('app', 'Number'),
-            'sum' => Yii::t('app', 'Sum'),
-            'coupon_id' => Yii::t('app', 'Coupon'),
+            'number' => Yii::t('main', 'Number'),
+            'sum' => Yii::t('main', 'Sum'),
+            'coupon_id' => Yii::t('main', 'Coupon'),
             'coupon' => Yii::t('main', 'Coupon'),
             'delivery_id' => Yii::t('main', 'Delivery'),
-            'delivery_sum' => Yii::t('app', 'Delivery Sum'),
+            'delivery_sum' => Yii::t('main', 'Delivery Sum'),
             'payment_id' => Yii::t('main', 'Payment'),
+            'comment' => Yii::t('main', 'Comment'),
             'host' => Yii::t('app', 'Host'),
             'referrer' => Yii::t('app', 'Referrer'),
             'ip' => 'IP',
@@ -139,6 +156,7 @@ class Orders extends \yii\db\ActiveRecord
             
             $this->products = Json::encode($cart['products']);
             $this->number = mt_rand(100000, 999999);
+            $this->delivery_sum = $this->delivery->free_sum < $sum ? 0 : $this->delivery->price;
             
             if (!empty($this->coupon_id) && ($this->coupon = Coupon::findOne($this->coupon_id))) {
                 if ($this->coupon->type == Coupon::TYPE_SUM) {
@@ -147,7 +165,8 @@ class Orders extends \yii\db\ActiveRecord
                     $sum = $sum - (($this->coupon->value*$sum)/100);
                 }
             }
-            $this->sum = round($sum, 2);
+            $this->sum = round(($sum + $this->delivery_sum), 2);
+            
             $this->host = $request->absoluteUrl;
             $this->referrer = $request->referrer;
             $this->ip = $request->userIP;

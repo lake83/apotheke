@@ -21,7 +21,9 @@ echo GridView::widget([
         ['class' => 'yii\grid\SerialColumn'],
 
             'name',
+            'surname',
             'phone',
+            'email:email',
             [
                 'attribute' => 'products',
                 'value' => function ($model, $index, $widget) {

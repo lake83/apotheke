@@ -13,6 +13,8 @@ $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
     <?= $form->field($model, 'image')->widget(\app\components\FilemanagerInput::className()) ?>
 
+    <?= $form->field($model, 'price')->textInput() ?>
+    
     <?= $form->field($model, 'free_sum')->textInput() ?>
 
     <?= $form->field($model, 'is_active')->checkbox() ?>
