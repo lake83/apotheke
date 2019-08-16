@@ -38,7 +38,7 @@ $session = Yii::$app->session;
             <div class="logo">
             <?= Html::a(Yii::t('main', 'Private pharmacy Germany'), ['site/index'], ['class' => 'logo']) ?>
             <?php Pjax::begin(['id' => 'menu-cart']) ?>            
-            <?= Html::a('<b class="hidden-xs hidden-sm">' . Yii::t('main', 'Shopping cart') . ':</b> € <strong>' . ($session['cart']['sum'] ?:'0.00') . '</strong> <span>' . ($session['cart']['quantity'] ?:'0') . '</span>', ['shop/cart'], ['class' => 'cart', 'data-pjax' => 0]) ?>
+            <?= Html::a('<b class="hidden-xs hidden-sm">' . Yii::t('main', 'Shopping cart') . ':</b> <strong>' . Yii::$app->formatter->asCurrency($session['cart']['sum'] ?:0) . '</strong> <span>' . ($session['cart']['quantity'] ?:'0') . '</span>', ['shop/cart'], ['class' => 'cart', 'data-pjax' => 0]) ?>
             <?php Pjax::end() ?>
             </div>
         </div>

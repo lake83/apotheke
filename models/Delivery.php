@@ -62,8 +62,9 @@ class Delivery extends \yii\db\ActiveRecord
     {
         return ArrayHelper::map(self::find()->select(['id', 'name', 'price', 'free_sum'])->where(['is_active' => 1])
             ->asArray()->orderBy('name ASC')->all(), 'id', function($model) {
-            return $model['name'] . ' - ' . $model['price'] . ' €' .
-                ($model['free_sum'] ? ' (' . Yii::t('main', 'Free shipping on order amount') . ': ' . $model['free_sum'] . ' €)' : '');
+            $format = Yii::$app->formatter;
+            return $model['name'] . ' - ' . $format->asCurrency($model['price']) .
+                ($model['free_sum'] ? ' (' . Yii::t('main', 'Free shipping on order amount') . ': ' . $format->asCurrency($model['free_sum']) : '');
         });
     }
 }

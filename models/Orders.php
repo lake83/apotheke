@@ -94,14 +94,14 @@ class Orders extends \yii\db\ActiveRecord
                             messages.push(data.message);
                         } else {
                             $('a.cart strong').text(data.sum);
-                            $('td.total').text(data.sum + ' €');
+                            $('td.total').text(data.sum);
                             $('#orders-coupon_id').val(data.coupon_id);
                             return true;
                         }
                     }));
                 }
-                $('a.cart strong').text(" . ($sum = Yii::$app->session->get('cart')['sum']) . ");
-                $('td.total').text(" . $sum . " + ' €');
+                $('a.cart strong').text('" . ($sum = Yii::$app->formatter->asCurrency(Yii::$app->session->get('cart')['sum'])) . "');
+                $('td.total').text('" . $sum . "');
                 $('#orders-coupon_id').val('');
                 return false;
             }"]

@@ -10,8 +10,9 @@ echo \yii\grid\GridView::widget([
         'quantity',
         [
            'attribute' => 'price',
+           'format' => 'currency',
            'value' => function ($model, $index, $widget) {
-               return $model['price'] . ' €';
+               return $model['price'];
            }
         ]
     ]

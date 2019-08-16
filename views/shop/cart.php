@@ -13,6 +13,7 @@ $this->registerJs("
 $('#cart').on('pjax:success', function() {
     $.pjax.reload({container: '#menu-cart'});
 });");
+$format = Yii::$app->formatter;
 ?>
 
 <h1><?= $this->title ?></h1>
@@ -60,10 +61,10 @@ echo GridView::widget([
         [
            'attribute' => 'price',
            'header' => Yii::t('main', 'Price'),
-           'value' => function ($model, $index, $widget) {
-               return $model['price'] . ' €';
+           'value' => function ($model, $index, $widget) use ($format) {
+               return $format->asCurrency($model['price']);
            },
-           'footer' => (Yii::$app->session['cart']['sum']?:'0.00') . ' €',
+           'footer' => ($format->asCurrency(Yii::$app->session['cart']['sum']?:0)),
            'footerOptions' => [
                'colspan' => 2
            ]

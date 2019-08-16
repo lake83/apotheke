@@ -16,9 +16,10 @@ echo GridView::widget([
         ],
         [
            'attribute' => 'price',
+           'format' => 'currency',
            'header' => Yii::t('main', 'Price'),
            'value' => function ($model, $index, $widget) {
-               return $model->price . ' €';
+               return $model->price;
            }
         ],
         

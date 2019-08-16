@@ -11,6 +11,8 @@ use app\models\Delivery;
 use app\models\Payment;
 
 $this->title = Yii::t('main', 'Order');
+
+$format = Yii::$app->formatter;
 ?>
 
 <h1><?= $this->title ?></h1>
@@ -45,10 +47,10 @@ $this->title = Yii::t('main', 'Order');
         [
            'attribute' => 'price',
            'header' => Yii::t('main', 'Price'),
-           'value' => function ($model, $index, $widget) {
-               return $model['price'] . ' €';
+           'value' => function ($model, $index, $widget) use ($format) {
+               return $format->asCurrency($model['price']);
            },
-           'footer' => Yii::$app->session['cart']['sum'] . ' €',
+           'footer' => $format->asCurrency(Yii::$app->session['cart']['sum']),
            'footerOptions' => [
                'class' => 'total',
                'colspan' => 2

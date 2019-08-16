@@ -60,7 +60,9 @@ $config = [
             ]
         ],
         'formatter' => [
-            'timeZone' => 'Europe/Berlin'
+            'timeZone' => 'Europe/Berlin',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => ' '         
         ],
         'i18n' => [
             'translations' => [

@@ -26,8 +26,8 @@ echo  \yii\widgets\DetailView::widget([
             ],
             [
                 'attribute' => 'delivery_sum',
-                'format' => 'raw',
-                'value' => '<b>' . $model->delivery_sum  . ' €</b>'
+                'format' => 'currency',
+                'value' => $model->delivery_sum
             ],
             [
                 'attribute' => 'coupon_id',
@@ -37,8 +37,8 @@ echo  \yii\widgets\DetailView::widget([
             ],
             [
                 'attribute' => 'sum',
-                'format' => 'raw',
-                'value' => '<b>' . $model->sum . ' €</b>'
+                'format' => 'currency',
+                'value' => $model->sum
             ]
         ]
     ]);

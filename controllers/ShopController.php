@@ -17,7 +17,7 @@ class ShopController extends Controller
         $this->session = Yii::$app->session;
         
         if (!$this->session->has('cart')) {
-            $this->session->set('cart', ['sum' => '0.00', 'quantity' => 0, 'products' => []]);
+            $this->session->set('cart', ['sum' => 0, 'quantity' => 0, 'products' => []]);
         }
         parent::init();
     }
@@ -69,7 +69,7 @@ class ShopController extends Controller
                 $cart['quantity']-= $cart['products'][$id]['quantity'];
                 
                 if ($cart['quantity'] == 0) {
-                    $cart['sum'] = '0.00';
+                    $cart['sum'] = 0;
                 } else {
                     $cart['sum']-= $cart['products'][$id]['price'] * $cart['products'][$id]['quantity'];
                 }
@@ -102,6 +102,7 @@ class ShopController extends Controller
 
         if ($model->load($request->post()) && $model->save()) {
             $content = str_replace('{{user_data}}', $this->renderPartial('user_data', ['model' => $model]), $model->payment->page);
+            $content = str_replace('{{order_number}}', $model->number, $content);
             $content = str_replace('{{order}}', $this->renderPartial('order_data', [
                 'dataProvider' => new ArrayDataProvider([
                     'allModels' => Json::decode($model->products),
@@ -143,7 +144,7 @@ class ShopController extends Controller
                 } else {
                     $sum = $sum - (($coupon['value']*$sum)/100);
                 }
-                return ['status' => 'success', 'coupon_id' => $coupon['id'], 'sum' => round($sum, 2)];
+                return ['status' => 'success', 'coupon_id' => $coupon['id'], 'sum' => Yii::$app->formatter->asCurrency(round($sum, 2))];
             }
         }
     }
