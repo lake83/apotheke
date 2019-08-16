@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\filters\{AccessControl, VerbFilter};
-use app\models\{LoginForm, Contact, Reviews, ReviewsSearch, Pages, Products};
+use app\models\{LoginForm, Contact, Reviews, Pages, Products};
 use app\components\{SiteHelper, LogTraffic, ProductGridWidget, MainGridWidget};
 use yii\web\{NotFoundHttpException, Response, Controller};
 use yii\caching\TagDependency;
@@ -159,7 +159,6 @@ class SiteController extends Controller
     public function actionReviews()
     {
         $model = new Reviews;
-        $searchModel = new ReviewsSearch;
         $request = Yii::$app->request;
 
         if ($request->isAjax && $model->load($request->post())) {
@@ -171,7 +170,9 @@ class SiteController extends Controller
         }
         return $this->render('reviews', [
             'model' => $model,
-            'dataProvider' => $searchModel->search(['front' => true])
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Reviews::find()->where(['is_active' => 1])->orWhere(['ip' => Yii::$app->request->userIP])
+            ])
         ]);
     }
 }

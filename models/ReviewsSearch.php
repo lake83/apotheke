@@ -43,9 +43,6 @@ class ReviewsSearch extends Reviews
     {
         $query = Reviews::find();
 
-        if (isset($params['front'])) {
-            $query->where(['is_active' => 1])->orWhere(['ip' => Yii::$app->request->userIP]);
-        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort'=> ['defaultOrder' => ['created_at' => SORT_ASC]]
