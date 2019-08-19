@@ -71,7 +71,7 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'surname', 'phone', 'email', 'street', 'city', 'region', 'postcode', 'delivery_id', 'payment_id'], 'required'],
-            [['coupon_id', 'delivery_id', 'payment_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['coupon_id', 'payment_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['sum', 'delivery_sum'], 'number'],
             ['email', 'email'],
             ['number', 'unique'],
@@ -96,6 +96,7 @@ class Orders extends \yii\db\ActiveRecord
                             $('a.cart strong').text(data.sum);
                             $('td.total').text(data.sum);
                             $('#orders-coupon_id').val(data.coupon_id);
+                            $('table tfoot').prepend('<tr class=\"use-coupon\"><td colspan=\"2\"><b>" . Yii::t('main', 'Coupon') . ":</b></td><td colspan=\"2\">- ' + data.discount + '</td></tr>');
                             return true;
                         }
                     }));
@@ -103,7 +104,16 @@ class Orders extends \yii\db\ActiveRecord
                 $('a.cart strong').text('" . ($sum = Yii::$app->formatter->asCurrency(Yii::$app->session->get('cart')['sum'])) . "');
                 $('td.total').text('" . $sum . "');
                 $('#orders-coupon_id').val('');
+                $('.use-coupon').remove();
                 return false;
+            }"],
+            ['delivery_id', 'integer', 'whenClient' => "function (attribute, value) {
+                if (value != '') {
+                    var radio = $('#orders-delivery_id input:checked').next('span');
+                    
+                    $('.use-delivery').remove();
+                    $('table tfoot').prepend('<tr class=\"use-delivery\"><td colspan=\"2\"><b>" . Yii::t('main', 'Delivery') . ":</b></td><td colspan=\"2\">' + radio.data('price') + '</td></tr>');
+                }
             }"]
         ];
     }

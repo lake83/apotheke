@@ -128,6 +128,7 @@ class ShopController extends Controller
     public function actionCheckCoupon()
     {
         $request = Yii::$app->request;
+        $format = Yii::$app->formatter;
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
         if ($request->isAjax && ($number = $request->post('number'))) {
@@ -142,9 +143,15 @@ class ShopController extends Controller
                 if ($coupon['type'] == Coupon::TYPE_SUM) {
                     $sum-= $coupon['value'];
                 } else {
-                    $sum = $sum - (($coupon['value']*$sum)/100);
+                    $discount = ($coupon['value']*$sum)/100;
+                    $sum-= $discount;
                 }
-                return ['status' => 'success', 'coupon_id' => $coupon['id'], 'sum' => Yii::$app->formatter->asCurrency(round($sum, 2))];
+                return [
+                    'status' => 'success',
+                    'coupon_id' => $coupon['id'],
+                    'discount' => $format->asCurrency(($coupon['type'] == Coupon::TYPE_SUM ? $coupon['value'] : $discount)),
+                    'sum' => $format->asCurrency($sum)
+                ];
             }
         }
     }

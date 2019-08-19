@@ -83,7 +83,10 @@ $format = Yii::$app->formatter;
     
 <?= $form->field($model, 'postcode')->textInput(['maxlength' => true]) ?>
 
-<?= $form->field($model, 'delivery_id')->radioList(Delivery::getAll(), ['style' => 'white-space: nowrap;']) ?>
+<?= $form->field($model, 'delivery_id')->radioList(Delivery::getAll(), [
+    'item' => function($index, $label, $name, $checked, $value) {
+        return '<div class="radio"><label><input type="radio" name="' . $name . '" value="' . $value . '"> ' . $label . '</label></div>';
+    }]) ?>
 
 <?= $form->field($model, 'payment_id')->radioList(Payment::getAll()) ?>
 
