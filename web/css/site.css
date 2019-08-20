@@ -1,6 +1,21 @@
+@font-face {
+  font-family: 'Butler';
+  src: url('../fonts/Butler_Bold.otf');
+}
+@font-face {
+  font-family: 'Montserrat-Light';
+  src: url('../fonts/Montserrat-Light.ttf');
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../fonts/Montserrat-Medium.ttf');
+}
+
+
 html,
 body {
     height: 100%;
+    font-family: 'Montserrat';
 }
 .wrap {
     min-height: 100%;
@@ -12,46 +27,148 @@ body {
     padding-bottom: 20px;
 }
 .header {
-    height: 180px;
-    background-color: #18c7f2;
+    height: 130px;
+    background-image: linear-gradient(0deg, #1795c3 0%, #19cdf5 100%);
 }
 .header .logo {
     display: block;
     width: 100%;
-    height: 180px;
-    background: url('/images/pharmacy.png') no-repeat center left 7%, url('/images/flag.png') no-repeat center left;
+    height: 130px;
+    background: url('/images/doctor.png') no-repeat center right, url('/images/flag.png') no-repeat center left;
 }
-#main-menu {
-    background-color: #07314d;
-    border-color: #07314d;
-    border-radius: 0;
+.header .logo-title {
+    display: inline-block;
+    color: #fff;
+    font-size: 32px;
+    font-family: 'Butler';
+    text-decoration: none;
+    margin: 28px 0 0 39%;
 }
-#main-menu .navbar-nav {
+.header .logo p {
+    margin-left: 39%;
+    color: #16587b;
     font-size: 18px;
 }
+#main-menu {
+    background-image: linear-gradient(0deg, #175175 0%, #1b5b85 100%);
+    border: 0;
+    border-radius: 0;
+    z-index: 999;
+}
+#main-menu .navbar-nav {
+    font-size: 16px;
+}
+.navbar-inverse .navbar-nav > li > a {
+    color: #fff;
+}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    background-color: inherit;
+    color: #34def9;
+}
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background: none; 
+}
+.navbar-toggle {
+    border: 0;
+}
 .header .cart {
+    font-family: 'Montserrat-Light';
     float: right;
     display: block;
     position: relative;
-    font-size: 18px;
-    color: #fff;
+    font-size: 16px;
+    color: #34def9;
     z-index: 9999;
-    background-color: #0c476f;
-    padding: 9px;
+    background-color: #fff;
+    padding: 4px 47px 4px 7px;
     margin-right: -15px;
+    top: 29px;
+    border: 1px solid #34def9;
 }
 .header .cart:hover {
     text-decoration: none;
 }
-.header .cart span {
-    background: #EB5757;
+.header .cart strong {
+    color: #16587b;
+    padding: 0 5px;
+}
+.header .cart span, #mobile-menu-cart .mobile-cart span {
+    background: #16587b;
     border-radius: 50%;
     display: inline-block;
-    width: 34px;
-    height: 34px;
+    width: 25px;
+    height: 25px;
     text-align: center;
-    padding-top: 5px;
-    margin-left: 12px;
+    padding-top: 2px;
+    color: #fff;
+}
+.header .cart em {
+    position: absolute;
+    width: 40px;
+    height: 100%;
+    background-color: #34def9;
+    top: 0;
+    right: 0;
+    padding: 3px;
+}
+.menu-mobile {
+    color: #fff;
+    font-size: 26px;
+    margin-top: 5px;
+}
+.header-mobile {
+    background-image: linear-gradient(90deg, #19cdf5 0%, #579ed9 100%);
+    height: 152px;
+    width: 100%;
+    position: relative;
+    top: -25px;
+}
+.header-mobile > div {
+    padding: 5px 15px 0 15px;
+}
+.header-mobile .logo-title {
+    display: inline-block;
+    color: #fff;
+    font-size: 23px;
+    font-family: 'Butler';
+    text-decoration: none;
+}
+.header-mobile > div p {
+    color: #16587b;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+.header-mobile .logo-flag {
+    display: block;
+    width: 100%;
+    height: 91px;
+    background: url('/images/m-flag.png') no-repeat center center;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+}
+#mobile-menu-cart .mobile-cart {
+    display: inline-block;
+    width: 50%;
+    height: 50px;
+    background-color: #098bb7;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 999;
+    color: #fff;
+    font-size: 18px;
+    padding-top: 10px;
+}
+#mobile-menu-cart .mobile-cart span {
+    margin: 0 7px;
+    width: 30px;
+    height: 30px;
+    color: #098bb7;
+}
+#mobile-menu-cart .mobile-cart em {
+    position: absolute;
+    top: 8px;
+    right: 15px;
 }
 #main-menu .navbar-toggle {
     float: left;
@@ -81,10 +198,28 @@ body {
     padding: 10px;
 }
 .footer {
-    height: 60px;
-    background-color: #f5f5f5;
-    border-top: 1px solid #ddd;
-    padding-top: 20px;
+    background-color: #05293f;
+    color: #34def9;
+    padding: 15px 0;
+}
+.footer p {
+    font-size: 18px;
+}
+.footer span {
+    color: #fff;
+    display: block;
+    margin-bottom: 25px;
+    font-size: 18px;
+}
+#footer-menu li > a {
+    padding: 2px 0;
+    color: #fff;
+}
+.footer .footer-content > div {
+    min-height: 100px;
+}
+.no-padding {
+    padding: 0;
 }
 .not-set {
     color: #c55;
@@ -136,23 +271,17 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
-/* align the logout "link" (button in form) of the navbar */
-.nav li > form > button.logout {
-    padding: 15px;
-    border: none;
-}
-@media(max-width:767px) {
-    .nav li > form > button.logout {
-        display:block;
-        text-align: left;
-        width: 100%;
-        padding: 10px 15px;
+
+@media screen and (min-width: 768px) and (max-width: 1199px) {
+    #main-menu .container {
+        padding-left: 0;
     }
-}
-.nav > li > form > button.logout:focus,
-.nav > li > form > button.logout:hover {
-    text-decoration: none;
-}
-.nav > li > form > button.logout:focus {
-    outline: none;
+    #main-menu-collapse {
+        padding: 0;
+    }
+    .nav > li > a {
+        padding: 5px;
+        font-size: 13px;
+        margin-top: 10px;
+    }
 }

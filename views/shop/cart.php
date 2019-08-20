@@ -12,6 +12,7 @@ $this->title = Yii::t('main', 'Shopping cart');
 $this->registerJs("
 $('#cart').on('pjax:success', function() {
     $.pjax.reload({container: '#menu-cart'});
+    $.pjax.reload({container: '#mobile-menu-cart'});    
 });");
 $format = Yii::$app->formatter;
 ?>
