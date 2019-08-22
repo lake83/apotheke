@@ -33,7 +33,10 @@ $this->title = $model->name;
             'email:email',
             'street',
             'city',
-            'region',
+            [
+                'attribute' => 'region',
+                'value' => Yii::$app->params['countries'][$model->region]
+            ],
             'postcode',
             [
                 'attribute' => 'products',

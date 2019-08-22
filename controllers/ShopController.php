@@ -148,7 +148,7 @@ class ShopController extends Controller
                 }
             }
             if (($delivery_id = $request->post('delivery_id')) && ($delivery = Delivery::find()->select(['price', 'free_sum'])->where(['id' => $delivery_id])->asArray()->one())) {
-                $delivery_sum = $delivery['free_sum'] < $sum ? 0 : $delivery['price'];
+                $delivery_sum = $delivery['free_sum'] && $delivery['free_sum'] < $sum ? 0 : $delivery['price'];
                 $sum+= $delivery_sum;
             }
             return [

@@ -142,13 +142,18 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
+        if (!$page = Pages::findOne(['slug' => 'contact'])) {
+            throw new NotFoundHttpException(Yii::t('main', 'Page not found.'));
+        }
         $model = new Contact;
+        $page->content = str_replace('{{contact}}', $this->renderPartial('contact', ['model' => $model]), $page->content);
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('contactFormSubmitted');
 
             return $this->refresh();
         }
-        return $this->render('contact', ['model' => $model]);
+        return $this->render('page', ['model' => $page]);
     }
     
     /**
@@ -158,9 +163,19 @@ class SiteController extends Controller
      */
     public function actionReviews()
     {
+        if (!$page = Pages::findOne(['slug' => 'reviews'])) {
+            throw new NotFoundHttpException(Yii::t('main', 'Page not found.'));
+        }
         $model = new Reviews;
         $request = Yii::$app->request;
-
+        
+        $page->content = str_replace('{{reviews_data}}', $this->renderPartial('reviews_data', [
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Reviews::find()->where(['is_active' => 1])->orWhere(['ip' => Yii::$app->request->userIP])
+            ])
+        ]), $page->content);
+        $page->content = str_replace('{{reviews_form}}', $this->renderPartial('reviews_form', ['model' => $model]), $page->content);
+            
         if ($request->isAjax && $model->load($request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return \yii\widgets\ActiveForm::validate($model);
@@ -168,11 +183,6 @@ class SiteController extends Controller
         if ($model->load($request->post()) && $model->save()) {
             return $this->refresh();
         }
-        return $this->render('reviews', [
-            'model' => $model,
-            'dataProvider' => new ActiveDataProvider([
-                'query' => Reviews::find()->where(['is_active' => 1])->orWhere(['ip' => Yii::$app->request->userIP])
-            ])
-        ]);
+        return $this->render('page', ['model' => $page]);
     }
 }

@@ -15,7 +15,8 @@ class settings implements BootstrapInterface
     public function bootstrap($app)
     {
         $app->params = Yii::$app->cache->getOrSet('settings', function () use ($app) {
-            return ArrayHelper::map($app->db->createCommand("SELECT name, value FROM settings")->queryAll(), 'name', 'value');
+            return ArrayHelper::map($app->db->createCommand("SELECT name, value FROM settings")->queryAll(), 'name', 'value') +
+                require(__DIR__ . '/params.php');
         }, 0, new \yii\caching\TagDependency(['tags' => 'settings']));
         
         if (!$app instanceof \yii\console\Application) {

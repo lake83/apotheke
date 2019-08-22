@@ -21,7 +21,7 @@ $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
     
     <?= $form->field($model, 'number')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'phone')->widget(MaskedInput::className(), ['mask' => Yii::$app->params['phone_mask']]) ?>
+    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
     
@@ -29,7 +29,7 @@ $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
     
     <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'region')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'region')->dropDownList(Yii::$app->params['countries']) ?>
     
     <?= $form->field($model, 'postcode')->textInput(['maxlength' => true]) ?>
 

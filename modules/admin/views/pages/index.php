@@ -23,6 +23,9 @@ $this->title = Yii::t('app', 'Pages');
        <p>{{user_data}} - <?= Yii::t('app', 'User information on the checkout page.') ?></p>
        <p>{{order}} - <?= Yii::t('app', 'Ordering information on the checkout page.') ?></p>
        <p>{{order_number}} - <?= Yii::t('app', 'Order number.') ?></p>
+       <p>{{reviews_data}} - <?= Yii::t('app', 'Reviews list.') ?></p>
+       <p>{{reviews_form}} - <?= Yii::t('app', 'Add review form.') ?></p>
+       <p>{{contact}} - <?= Yii::t('app', 'Contact form.') ?></p>
    </div>
 </div>
 

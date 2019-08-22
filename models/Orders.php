@@ -16,7 +16,7 @@ use yii\helpers\Json;
  * @property string $email
  * @property string $street
  * @property string $city
- * @property string $region
+ * @property int $region
  * @property string $postcode
  * @property string $products
  * @property string $number
@@ -70,12 +70,12 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'surname', 'phone', 'email', 'street', 'city', 'region', 'postcode', 'delivery_id', 'payment_id'], 'required'],
-            [['coupon_id', 'payment_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['coupon_id', 'payment_id', 'region', 'status', 'created_at', 'updated_at'], 'integer'],
             [['sum', 'delivery_sum'], 'number'],
             ['email', 'email'],
             ['number', 'unique'],
             [['coupon_id', 'delivery_sum'], 'default', 'value' => 0],
-            [['name', 'surname', 'street', 'city', 'region', 'referrer'], 'string', 'max' => 255],
+            [['name', 'surname', 'street', 'city', 'referrer'], 'string', 'max' => 255],
             [['postcode', 'number'], 'string', 'max' => 12],
             ['phone', 'string', 'max' => 20],
             [['email', 'host', 'agent'], 'string', 'max' => 100],
@@ -83,7 +83,7 @@ class Orders extends \yii\db\ActiveRecord
             ['cookie_id', 'string', 'max' => 50],
             [['products', 'comment'], 'string'],
             ['status', 'default', 'value' => self::STATUS_NEW],
-            [['name', 'surname', 'street', 'city', 'region', 'postcode', 'comment'], 'filter', 'filter' => function ($value) {
+            [['name', 'surname', 'street', 'city', 'postcode', 'comment'], 'filter', 'filter' => function ($value) {
                 return \yii\helpers\HtmlPurifier::process($value);
             }],
             ['coupon', function ($attribute, $params, $validator) {

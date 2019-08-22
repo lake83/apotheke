@@ -37,6 +37,7 @@ $params = Yii::$app->params;
     <div class="header hidden-xs">
         <div class="container">
             <div class="logo">
+                <?= Html::a('<img style="position: absolute;" src="/images/flag.png" />', ['site/index']) ?>
                 <?= Html::a(Yii::t('main', 'Private pharmacy Germany'), ['site/index'], ['class' => 'logo-title']) ?>
                 <p><?= Yii::t('main', 'Security Discretion Trust Quality') ?></p>
                 <?php Pjax::begin(['id' => 'menu-cart']) ?>            
@@ -63,6 +64,7 @@ $params = Yii::$app->params;
         ]
     ]);
     $items = [
+        ['label' => Yii::t('main', 'Main'), 'url' => ['site/index']],
         ['label' => Yii::t('main', 'About us'), 'url' => ['site/page', 'slug' => 'about'], 'active' => $slug == 'about'],
         ['label' => Yii::t('main', 'Answers & questions'), 'url' => ['site/page', 'slug' => 'faq'], 'active' => $slug == 'faq'],
         ['label' => Yii::t('main', 'Contact'), 'url' => ['site/contact']],

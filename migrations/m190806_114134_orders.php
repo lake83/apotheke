@@ -17,7 +17,7 @@ class m190806_114134_orders extends Migration
             'email' => $this->string(100)->notNull(),
             'street' => $this->string()->notNull(),
             'city' => $this->string()->notNull(),
-            'region' => $this->string()->notNull(),
+            'region' => $this->integer()->notNull(),
             'postcode' => $this->string(12)->notNull(),
             'products' => $this->text()->notNull(),
             'number' => $this->string(12)->notNull(),

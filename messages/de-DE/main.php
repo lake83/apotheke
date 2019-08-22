@@ -92,5 +92,6 @@ return [
     'Your feedback' => 'Ihre Bewertung',
     'Add review' => 'Bewertung hinzufügen',
     'Feedback' => 'Rückmeldung', 
-    'Redeem' => 'Einlösen'
+    'Redeem' => 'Einlösen',
+    'Main' => 'Startseite'
 ];

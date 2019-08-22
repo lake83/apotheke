@@ -17,9 +17,9 @@ class OrdersSearch extends Orders
     public function rules()
     {
         return [
-            [['id', 'coupon_id', 'delivery_id', 'payment_id', 'status'], 'integer'],
-            [['created_at', 'updated_at'], 'date', 'format' => 'd.m.Y'],
-            [['name', 'surname', 'products', 'number', 'phone', 'email', 'street', 'city', 'region', 'postcode', 'comment', 'host', 'referrer', 'ip', 'agent', 'cookie_id', 'language'], 'safe'],
+            [['id', 'coupon_id', 'delivery_id', 'region', 'payment_id', 'status'], 'integer'],
+            [['updated_at'], 'date', 'format' => 'd.m.Y'],
+            [['name', 'surname', 'products', 'number', 'phone', 'email', 'street', 'city', 'postcode', 'comment', 'created_at', 'host', 'referrer', 'ip', 'agent', 'cookie_id', 'language'], 'safe'],
             [['sum', 'delivery_sum'], 'number']
         ];
     }
@@ -44,12 +44,18 @@ class OrdersSearch extends Orders
         $query = Orders::find();
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query
+            'query' => $query,
+            'sort'=> ['defaultOrder' => ['created_at' => SORT_DESC]]
         ]);
         $this->load($params);
 
         if (!$this->validate()) {
             return $dataProvider;
+        }
+        if ($this->created_at && $this->created_at !== ' ') {
+            $created = explode('-', $this->created_at);
+            $query->andFilterWhere(['>=', 'created_at', strtotime($created[0] . ' 00:00:00')])
+                ->andFilterWhere(['<', 'created_at', strtotime($created[1] . ' 23:59:59')]);
         }
         $query->andFilterWhere([
             'id' => $this->id,
@@ -57,9 +63,9 @@ class OrdersSearch extends Orders
             'coupon_id' => $this->coupon_id,
             'delivery_id' => $this->delivery_id,
             'delivery_sum' => $this->delivery_sum,
+            'region' => $this->region,
             'payment_id' => $this->payment_id,
             'status' => $this->status,
-            'FROM_UNIXTIME(created_at, "%d.%m.%Y")' => $this->created_at,
             'FROM_UNIXTIME(updated_at, "%d.%m.%Y")' => $this->updated_at
         ]);
         $query->andFilterWhere(['like', 'name', $this->name])
@@ -70,7 +76,6 @@ class OrdersSearch extends Orders
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'street', $this->street])
             ->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'region', $this->region])
             ->andFilterWhere(['like', 'postcode', $this->postcode])
             ->andFilterWhere(['like', 'comment', $this->comment])
             ->andFilterWhere(['like', 'host', $this->host])

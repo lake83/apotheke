@@ -13,7 +13,10 @@ echo  \yii\widgets\DetailView::widget([
             'email',
             'street',
             'city',
-            'region',
+            [
+                'attribute' => 'region',
+                'value' => Yii::$app->params['countries'][$model->region]
+            ],
             'postcode',
             'comment:ntext',
             [

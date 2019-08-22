@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
-use app\components\SiteHelper;
+use kartik\daterange\DateRangePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrdersSearch */
@@ -14,6 +14,7 @@ echo GridView::widget([
     'layout' => '{items}{pager}',
     'dataProvider' => $dataProvider,
     'pjax' => true,
+    'pjaxSettings' => ['loadingCssClass' => false],
     'export' => false,
     'showPageSummary' => true,
     'filterModel' => $searchModel,
@@ -46,7 +47,24 @@ echo GridView::widget([
                     return $model->getStatuses($model->status);}
             ],
             [
+                'attribute' => 'created_at',
+                'format' => 'datetime',
+                'filterType' => GridView::FILTER_DATE_RANGE,
+                'filterWidgetOptions' => [       
+                'attribute' => 'created_at',
+                'presetDropdown' => true,
+                'convertFormat' => false,
+                    'pluginOptions' => [
+                        'locale' => [
+                            'format' => 'D.MM.Y',
+                            'separator' => '-'
+                        ]
+                    ]
+                ]
+            ],
+            [
                 'attribute' => 'sum',
+                'format' => ['decimal', 2],
                 'pageSummary' => true
             ],
 

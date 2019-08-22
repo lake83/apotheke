@@ -93,16 +93,16 @@ $format = Yii::$app->formatter;
 
         <?= $form->field($model, 'surname')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'phone')->widget(\yii\widgets\MaskedInput::className(), ['mask' => Yii::$app->params['phone_mask']]) ?>
+        <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
     </div>
     <div class="col-md-6">
-        <?= $form->field($model, 'street')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'region')->dropDownList(Yii::$app->params['countries']) ?>
         
         <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
         
-        <?= $form->field($model, 'region')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'street')->textInput(['maxlength' => true]) ?>
         
         <?= $form->field($model, 'postcode')->textInput(['maxlength' => true]) ?>
     </div>
@@ -128,6 +128,6 @@ $(document).on('click change', '.add_coupon, #orders-coupon, #orders-delivery_id
         $('td.total').find('span').eq(0).text('- ' + data.discount);
         $('td.total').find('span').eq(1).text(data.delivery_sum);
         $('td.total').find('span').eq(2).text(data.sum);
-        $('#orders-coupon_id').val(data.coupon_id); 
+        $('#orders-coupon_id').val(data.coupon_id);
     });
 });"); ?>

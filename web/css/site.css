@@ -38,9 +38,10 @@ h1 {
     display: block;
     width: 100%;
     height: 130px;
-    background: url('/images/doctor.png') no-repeat center right, url('/images/flag.png') no-repeat center left;
+    background: url('/images/doctor.png') no-repeat center right;
 }
 .header .logo-title {
+    position: relative;
     display: inline-block;
     color: #fff;
     font-size: 32px;
@@ -49,6 +50,7 @@ h1 {
     margin: 28px 0 0 39%;
 }
 .header .logo p {
+    position: relative;
     margin-left: 39%;
     font-size: 18px;
 }
@@ -238,6 +240,9 @@ h1 {
 .footer .footer-content > div p {
     text-transform: uppercase;
 }
+#footer-menu li > a:hover {
+    background: none;
+}
 .no-padding {
     padding: 0;
 }
@@ -392,7 +397,7 @@ hr {
 #add-review-form .form-group div, #contact-form .form-group div {
     padding: 0;
 }
-#add-review-form input, #add-review-form textarea, #contact-form input, #contact-form textarea {
+#add-review-form input, #add-review-form textarea, #add-review-form select, #contact-form input, #contact-form textarea {
     border-radius: 0;
     border: 1px solid #43c3ef;
     color: #16587b;
@@ -429,6 +434,9 @@ hr {
     height: 220px;
     background-size: contain;
     background-repeat: no-repeat;
+}
+#main-menu ul > li > a {
+    padding: 15px 12px;
 }
 
 /* add sorting icons to gridview sort links */
@@ -484,9 +492,9 @@ a.desc:after {
     #main-menu-collapse {
         padding: 0;
     }
-    .nav > li > a {
-        padding: 5px;
-        font-size: 13px;
+    #main-menu ul > li > a {
+        padding: 4px;
+        font-size: 12px;
         margin-top: 10px;
     }
     .product-table tr td a {
