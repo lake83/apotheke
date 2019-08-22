@@ -82,15 +82,73 @@ $params = Yii::$app->params;
             <p><?= Yii::t('main', 'Security Discretion Trust Quality') ?></p>
         </div>
         <div class="logo-flag"></div>
+        <?php $this->beginBlock('mobile-products') ?>
+        
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#product-menu-collapse" onclick="js:$('.navbar-collapse').collapse('hide');">
+                <span class="sr-only">Toggle navigation</span><?= Yii::t('main', 'Product') ?>
+            </button>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#service-collapse" onclick="js:$('.navbar-collapse').collapse('hide');">
+                <span class="sr-only">Toggle navigation</span><?= Yii::t('main', 'Customer service') ?>
+            </button>
+            <div id="service-collapse" class="navbar-collapse collapse" aria-expanded="false">
+                
+                <?php $this->beginBlock('working', true) ?>
+                
+                <p><?= Yii::t('main', 'Working hours') ?>:</p>    
+                <span><?= $params['working_hours'] ?></span>
+                <hr />
+                <p><?= Yii::t('main', 'Telephone Germany') ?>:</p>    
+                <span><?= $params['working_phone'] ?></span>
+                
+                <?php $this->endBlock() ?>
+                
+            </div>
+        
+        <?php $this->endBlock();
+        
+        NavBar::begin([
+            'id' => 'product-menu',
+            'headerContent' => $this->blocks['mobile-products'],
+            'options' => [
+                'class' => 'navbar-inverse'
+            ]
+        ]);
+        echo Nav::widget(['items' => $menu_items]);
+        
+        NavBar::end(); ?>
     </div>        
 
-    <div class="container">
-        <div class="col-md-3">
-            <div class="products-header">Potenzmittel</div>
-            <?= Nav::widget(['items' => $menu_items]) ?>
+    <div class="container no-padding">
+        <div class="col-md-2-5 hidden-xs">
+            <div class="products-header"><?= Yii::t('main', 'Product') ?></div>
+            <?= Nav::widget(['id' => 'left-column', 'items' => $menu_items]) ?>
+            
+            <div class="products-header"><?= Yii::t('main', 'Payment methods') ?></div>
+            <div class="aside-column">
+                <img src="/images/nachnahme-1.png" />
+                <img src="/images/icon-vorkasse-blau.png" />
+            </div>
+            
+            <div class="banner">
+                <div class="column-banner" style="background-image: url('/images/banner1.png');"></div>
+                <?= Yii::t('main', 'Cheaper, faster & easier with us') ?>
+            </div>   
         </div>
-        <div class="col-md-9">
+        
+        <div class="col-md-7 col-sm-7">
             <?= $content ?>
+        </div>
+        
+        <div class="col-md-2-5 hidden-xs">
+            <div class="products-header"><?= Yii::t('main', 'Customer service') ?></div>
+            <div class="aside-column aside-right">    
+                <?= $this->blocks['working'] ?>
+            </div>
+            
+            <div class="banner">
+               <div class="column-banner" style="background-image: url('/images/3-Dapoxetine-160mg-600x420.png');"></div>
+               <?= Yii::t('main', 'Dapoxetine: up to 50% longer fun') ?>
+            </div>
         </div>
     </div>
 </div>
@@ -99,20 +157,20 @@ $params = Yii::$app->params;
     <div class="container">
         <div class="footer-content row">
             <div class="col-md-3 col-sm-6 col-xs-12">
-                <p><?= Yii::t('main', 'NAVIGATION') ?></p>
+                <p><?= Yii::t('main', 'Navigation') ?></p>
                 <?= Nav::widget(['id' => 'footer-menu', 'items' => $items]) ?>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
-                <p><?= Yii::t('main', 'PAYMENT METHODS') ?></p>
+                <p><?= Yii::t('main', 'Payment methods') ?></p>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
-                <p><?= Yii::t('main', 'DELIVERY') ?></p>
+                <p><?= Yii::t('main', 'Delivery') ?></p>
                 <img src="/images/ftr-ups.png" />
                 <img src="/images/ftr-ems.png" />
                 <img src="/images/ftr-d.png" />
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
-                <p><?= Yii::t('main', 'CONTACT DETAILS') ?></p>
+                <p><?= Yii::t('main', 'Contact details') ?></p>
                 <div class="col-md-12 col-xs-6 no-padding">
                     <?= Yii::t('main', 'Working hours') ?>:
                     <span><?= $params['working_hours'] ?></span>

@@ -4,16 +4,21 @@
 
 echo \yii\grid\GridView::widget([
     'dataProvider' => $dataProvider,
+    'tableOptions' => ['class' => 'table cart-table'],
     'layout' => '{items}',
     'columns' => [
-        'name',
-        'quantity',
+        [
+           'attribute' => 'name',
+           'header' => Yii::t('main', 'Product')
+        ],
+        [
+           'attribute' => 'quantity',
+           'header' => Yii::t('main', 'Amount')
+        ],
         [
            'attribute' => 'price',
-           'format' => 'currency',
-           'value' => function ($model, $index, $widget) {
-               return $model['price'];
-           }
+           'header' => Yii::t('main', 'Price'),
+           'format' => 'currency'
         ]
     ]
 ]) ?>

@@ -23,6 +23,7 @@ $format = Yii::$app->formatter;
 
 echo GridView::widget([
     'dataProvider' => $dataProvider,
+    'tableOptions' => ['class' => 'table cart-table'],
     'layout' => '{items}',
     'showFooter' => true,
     'footerRowOptions' => [
@@ -93,6 +94,6 @@ echo GridView::widget([
 Pjax::end();
 
 if (Yii::$app->session->get('cart')['quantity'] > 0) {
-    echo Html::a(Yii::t('main', 'To order'), ['shop/order'], ['class' => 'btn btn-primary pull-right']);
+    echo Html::a(Yii::t('main', 'To order'), ['shop/order'], ['class' => 'btn btn-primary pull-right go_to_order']);
 }
 ?>

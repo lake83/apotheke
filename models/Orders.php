@@ -5,7 +5,6 @@ namespace app\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\Json;
-use yii\helpers\Url;
 
 /**
  * This is the model class for table "orders".
@@ -87,34 +86,15 @@ class Orders extends \yii\db\ActiveRecord
             [['name', 'surname', 'street', 'city', 'region', 'postcode', 'comment'], 'filter', 'filter' => function ($value) {
                 return \yii\helpers\HtmlPurifier::process($value);
             }],
-            ['coupon', 'string', 'whenClient' => "function (attribute, value) {
-                if (value != '') {
-                    deferred.push($.post('" . Url::to(['shop/check-coupon']) . "', {number: value}).done(function(data) {
-                        if (data.status == 'error') {
-                            messages.push(data.message);
-                        } else {
-                            $('a.cart strong').text(data.sum);
-                            $('td.total').text(data.sum);
-                            $('#orders-coupon_id').val(data.coupon_id);
-                            $('table tfoot').prepend('<tr class=\"use-coupon\"><td colspan=\"2\"><b>" . Yii::t('main', 'Coupon') . ":</b></td><td colspan=\"2\">- ' + data.discount + '</td></tr>');
-                            return true;
-                        }
-                    }));
+            ['coupon', function ($attribute, $params, $validator) {
+                $coupon = Coupon::find()->select(['id'])->where(['code' => $this->$attribute, 'is_active' => 1])
+                    ->andWhere(['<', 'date_from', time()])->andWhere(['>', 'date_to', time()])->scalar();
+                if (!$coupon) {
+                    $this->addError($attribute, Yii::t('main', 'Invalid coupon code.'));
+                } else {
+                    $this->coupon_id = $coupon;
                 }
-                $('a.cart strong').text('" . ($sum = Yii::$app->formatter->asCurrency(Yii::$app->session->get('cart')['sum'])) . "');
-                $('td.total').text('" . $sum . "');
-                $('#orders-coupon_id').val('');
-                $('.use-coupon').remove();
-                return false;
-            }"],
-            ['delivery_id', 'integer', 'whenClient' => "function (attribute, value) {
-                if (value != '') {
-                    var radio = $('#orders-delivery_id input:checked').next('span');
-                    
-                    $('.use-delivery').remove();
-                    $('table tfoot').prepend('<tr class=\"use-delivery\"><td colspan=\"2\"><b>" . Yii::t('main', 'Delivery') . ":</b></td><td colspan=\"2\">' + radio.data('price') + '</td></tr>');
-                }
-            }"]
+            }]
         ];
     }
 

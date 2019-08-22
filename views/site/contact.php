@@ -10,40 +10,40 @@ use yii\captcha\Captcha;
 
 $this->title = Yii::t('main', 'Contact');
 ?>
-<div class="site-contact">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
+<h1><?= Html::encode($this->title) ?></h1>
 
-        <p><?= Yii::t('main', 'Thank you for contacting us. We will reply as soon as possible.') ?></p>
+<?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
 
-    <?php else: ?>
+<p><?= Yii::t('main', 'Thank you for contacting us. We will reply as soon as possible.') ?></p>
 
-        <div class="row">
-            <div class="col-lg-8">
+<?php else: ?>
 
-                <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
+<div class="row">
+    <div class="col-md-6 ">
 
-                    <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+        <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
 
-                    <?= $form->field($model, 'email') ?>
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => $model->getAttributeLabel('name')])->label(false) ?>
 
-                    <?= $form->field($model, 'subject') ?>
+            <?= $form->field($model, 'email')->textInput(['maxlength' => true, 'placeholder' => $model->getAttributeLabel('email')])->label(false) ?>
 
-                    <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
+            <?= $form->field($model, 'subject')->textInput(['maxlength' => true, 'placeholder' => $model->getAttributeLabel('subject')])->label(false) ?>
 
-                    <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                        'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                    ]) ?>
+            <?= $form->field($model, 'text')->textarea(['rows' => 4, 'placeholder' => $model->getAttributeLabel('text')])->label(false) ?>
 
-                    <div class="form-group">
-                        <?= Html::submitButton(Yii::t('main', 'Send'), ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
-                    </div>
+            <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+                'template' => '<div class="row"><div class="col-md-4 col-xs-4">{image}</div><div class="col-md-7 col-xs-7">{input}</div></div>'
+            ])->label(false) ?>
 
-                <?php ActiveForm::end(); ?>
+            <?= Html::submitButton(Yii::t('main', 'Send'), ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
 
-            </div>
-        </div>
+        <?php ActiveForm::end(); ?>
 
-    <?php endif; ?>
+    </div>
+    <div class="col-md-6 hidden-xs hidden-sm">
+        <div class="contact-banner" style="background-image: url('/images/133728_or.png');"></div>
+    </div>
 </div>
+
+<?php endif; ?>

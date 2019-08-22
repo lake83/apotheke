@@ -8,6 +8,7 @@ use yii\helpers\Html;
 
 echo GridView::widget([
     'dataProvider' => $dataProvider,
+    'tableOptions' => ['class' => 'table product-table'],
     'layout' => '{items}',
     'columns' => [
         [
@@ -28,7 +29,7 @@ echo GridView::widget([
             'template' => '{buy}',
             'buttons' => [
                 'buy' => function ($url, $model, $key) {
-                    return Html::a('<span class="glyphicon glyphicon-gift"></span>', ['shop/buy', 'id' => $model->id], [
+                    return Html::a('<img src="/images/shopping-cart-buy.png" width="36" />', ['shop/buy', 'id' => $model->id], [
                         'title' => Yii::t('main', 'Buy')
                     ]);
                 }

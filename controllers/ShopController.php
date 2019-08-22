@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\{Controller, NotFoundHttpException};
-use app\models\{Products, Orders, Payment, Coupon};
+use app\models\{Products, Orders, Payment, Coupon, Delivery};
 use yii\data\ArrayDataProvider;
 use yii\helpers\Json;
 
@@ -100,6 +100,10 @@ class ShopController extends Controller
         $model = new Orders;
         $request = Yii::$app->request;
 
+        if ($request->isAjax && $model->load($request->post())) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return \yii\widgets\ActiveForm::validate($model);
+        }
         if ($model->load($request->post()) && $model->save()) {
             $content = str_replace('{{user_data}}', $this->renderPartial('user_data', ['model' => $model]), $model->payment->page);
             $content = str_replace('{{order_number}}', $model->number, $content);
@@ -121,38 +125,39 @@ class ShopController extends Controller
     }
     
     /**
-     * Use coupon on order page
+     * Use coupon and delivery on order page
      *
      * @return string
      */
-    public function actionCheckCoupon()
+    public function actionCountTotal()
     {
         $request = Yii::$app->request;
         $format = Yii::$app->formatter;
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
-        if ($request->isAjax && ($number = $request->post('number'))) {
-            $coupon = Coupon::find()->select(['id', 'type', 'value'])->where(['code' => $number, 'is_active' => 1])
-                ->andWhere(['<', 'date_from', time()])->andWhere(['>', 'date_to', time()])->asArray()->one();
-            if (!$coupon) {
-                return ['status' => 'error', 'message' => Yii::t('main', 'Invalid coupon code.')];
-            } else {
-                $cart = $this->session->get('cart');
-                $sum = $cart['sum'];
-                
+        if ($request->isAjax) {
+            $cart = $this->session->get('cart');
+            $sum = $cart['sum'];
+            
+            if (($number = $request->post('number')) && ($coupon = Coupon::find()->select(['id', 'type', 'value'])->where(['code' => $number])->asArray()->one())) {
                 if ($coupon['type'] == Coupon::TYPE_SUM) {
                     $sum-= $coupon['value'];
                 } else {
                     $discount = ($coupon['value']*$sum)/100;
                     $sum-= $discount;
                 }
-                return [
-                    'status' => 'success',
-                    'coupon_id' => $coupon['id'],
-                    'discount' => $format->asCurrency(($coupon['type'] == Coupon::TYPE_SUM ? $coupon['value'] : $discount)),
-                    'sum' => $format->asCurrency($sum)
-                ];
             }
+            if (($delivery_id = $request->post('delivery_id')) && ($delivery = Delivery::find()->select(['price', 'free_sum'])->where(['id' => $delivery_id])->asArray()->one())) {
+                $delivery_sum = $delivery['free_sum'] < $sum ? 0 : $delivery['price'];
+                $sum+= $delivery_sum;
+            }
+            return [
+                'status' => 'success',
+                'coupon_id' => $number && $coupon ? $coupon['id'] : '',
+                'discount' => $format->asCurrency(($number && $coupon ? ($coupon['type'] == Coupon::TYPE_SUM ? $coupon['value'] : $discount) : 0)),
+                'delivery_sum' => $format->asCurrency(($delivery_id && $delivery ? $delivery_sum : 0)),
+                'sum' => $format->asCurrency($sum)
+            ];
         }
     }
 }
