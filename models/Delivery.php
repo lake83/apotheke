@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
  * @property string $image
  * @property double $price
  * @property double $free_sum
+ * @property double $free_sum_text
  * @property int $is_active
  */
 class Delivery extends \yii\db\ActiveRecord
@@ -36,7 +37,7 @@ class Delivery extends \yii\db\ActiveRecord
             [['price', 'free_sum'], 'number'],
             [['price', 'free_sum'], 'default', 'value' => 0],
             [['is_active'], 'integer'],
-            [['name'], 'string', 'max' => 255]
+            [['name', 'free_sum_text'], 'string', 'max' => 255]
         ];
     }
 
@@ -51,6 +52,7 @@ class Delivery extends \yii\db\ActiveRecord
             'image' => Yii::t('app', 'Image'),
             'price' => Yii::t('app', 'Price'),
             'free_sum' => Yii::t('app', 'Free shipping sum'),
+            'free_sum_text' => Yii::t('app', 'Free shipping text'),
             'is_active' => Yii::t('app', 'Active')
         ];
     }
@@ -60,11 +62,11 @@ class Delivery extends \yii\db\ActiveRecord
      */
     public static function getAll()
     {
-        return ArrayHelper::map(self::find()->select(['id', 'name', 'price', 'free_sum'])->where(['is_active' => 1])
+        return ArrayHelper::map(self::find()->select(['id', 'name', 'price', 'free_sum', 'free_sum_text'])->where(['is_active' => 1])
             ->asArray()->orderBy('name ASC')->all(), 'id', function($model) {
             $format = Yii::$app->formatter;
             return $model['name'] . ' - ' . $format->asCurrency($model['price']) .
-                ($model['free_sum'] ? ' (' . Yii::t('main', 'Free shipping on order amount') . ': ' . $format->asCurrency($model['free_sum']) . ')' : '');
+                ($model['free_sum'] ? ' (' . $model['free_sum_text'] . ' ' . $format->asCurrency($model['free_sum']) . ')' : '');
         });
     }
 }

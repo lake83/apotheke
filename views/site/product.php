@@ -30,7 +30,8 @@ echo GridView::widget([
             'buttons' => [
                 'buy' => function ($url, $model, $key) {
                     return Html::a('<img src="/images/shopping-cart-buy.png" width="36" />', ['shop/buy', 'id' => $model->id], [
-                        'title' => Yii::t('main', 'Buy')
+                        'title' => Yii::t('main', 'Buy'),
+                        'data-method' => 'POST'
                     ]);
                 }
             ],

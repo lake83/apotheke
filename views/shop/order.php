@@ -70,15 +70,16 @@ $format = Yii::$app->formatter;
 
 <div class="row">
     <div class="col-md-12">
-        <div class="col-md-7">
+        <div class="col-md-9 col-sm-8 col-xs-7 no-padding">
             <?= $form->field($model, 'coupon', ['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
             
             <?= Html::activeHiddenInput($model, 'coupon_id') ?>
         </div>
-        <div class="col-md-3">
-            <?= Html::a(Yii::t('main', 'Redeem'), ['#'], ['class' => 'btn btn-primary add_coupon', 'onclick' => 'js:return false;']) ?>
+        <div class="col-md-3 col-sm-3 col-xs-3 pull-right no-padding">
+            <?= Html::a(Yii::t('main', 'Redeem'), ['#'], ['class' => 'btn btn-primary add_coupon pull-right', 'onclick' => 'js:return false;']) ?>
         </div>
     </div>
+    <div class="clearfix"></div>
     <div class="col-md-6">
         <?= $form->field($model, 'delivery_id')->radioList(Delivery::getAll()) ?>
     </div>

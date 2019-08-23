@@ -7,6 +7,7 @@ use yii\web\{Controller, NotFoundHttpException};
 use app\models\{Products, Orders, Payment, Coupon, Delivery};
 use yii\data\ArrayDataProvider;
 use yii\helpers\Json;
+use yii\filters\VerbFilter;
 
 class ShopController extends Controller
 {
@@ -20,6 +21,21 @@ class ShopController extends Controller
             $this->session->set('cart', ['sum' => 0, 'quantity' => 0, 'products' => []]);
         }
         parent::init();
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'buy' => ['post']
+                ]
+            ]
+        ];
     }
     
     /**

@@ -75,10 +75,8 @@ return [
     'Complete order' => 'Bestellung abschließen',
     'Invalid coupon code.' => 'Ungültiger Gutscheincode.',
     'Order Details' => 'Bestelldetails',
-    'Free shipping on order amount' => 'Kostenloser Versand bei Bestellung',
     'discount' => 'diskont',
     'Security Discretion Trust Quality' => 'Sicherheit Diskretion Vertrauen Qualität',
-    'Copyright' => 'Urheberrecht',
     'Navigation' => 'Navigation',
     'Payment methods' => 'Zahlungsarten',
     'Contact details' => 'Kontaktdaten',
@@ -91,7 +89,6 @@ return [
     'Buy now' => 'Jetzt Kaufen',
     'Your feedback' => 'Ihre Bewertung',
     'Add review' => 'Bewertung hinzufügen',
-    'Feedback' => 'Rückmeldung', 
     'Redeem' => 'Einlösen',
     'Main' => 'Startseite'
 ];

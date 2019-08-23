@@ -28,6 +28,7 @@ class m190802_105313_payment_delivery extends Migration
             'image' => $this->text()->notNull(),
             'price' => $this->float()->notNull(),
             'free_sum' => $this->float()->notNull(),
+            'free_sum_text' => $this->string()->notNull(),
             'is_active' => $this->boolean()->defaultValue(1)
         ], $tableOptions);
     }

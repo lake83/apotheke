@@ -18,7 +18,7 @@ class DeliverySearch extends Delivery
     {
         return [
             [['id', 'is_active'], 'integer'],
-            [['name', 'image'], 'safe'],
+            [['name', 'image', 'free_sum_text'], 'safe'],
             [['price', 'free_sum'], 'number']
         ];
     }
@@ -57,7 +57,8 @@ class DeliverySearch extends Delivery
             'is_active' => $this->is_active,
         ]);
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'image', $this->image]);
+            ->andFilterWhere(['like', 'image', $this->image])
+            ->andFilterWhere(['like', 'free_sum_text', $this->free_sum_text]);
 
         return $dataProvider;
     }

@@ -178,7 +178,13 @@ class SiteController extends Controller
             
         if ($request->isAjax && $model->load($request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return \yii\widgets\ActiveForm::validate($model);
+            $attributes = $model->activeAttributes();
+            foreach ($attributes as $id => $name) {
+                if ($name == 'verifyCode') {
+                    unset($attributes[$id]);
+                }
+            }
+            return \yii\widgets\ActiveForm::validate($model, $attributes);
         }
         if ($model->load($request->post()) && $model->save()) {
             return $this->refresh();

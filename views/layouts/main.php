@@ -164,6 +164,8 @@ $params = Yii::$app->params;
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <p><?= Yii::t('main', 'Payment methods') ?></p>
+                <img src="/images/nachnahme-1.png" />
+                <img src="/images/icon-vorkasse-blau.png" />
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <p><?= Yii::t('main', 'Delivery') ?></p>
@@ -185,7 +187,7 @@ $params = Yii::$app->params;
         </div>
         <div class="row">
             <div class="col-md-12 text-center">
-                <?= Yii::t('main', 'Copyright') ?> &copy; <?= date('Y') ?>
+                Coryright &copy; <?= date('Y') ?> Private Apotheke Deutschland 
             </div>
         </div>
     </div>

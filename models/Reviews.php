@@ -18,6 +18,8 @@ use yii\behaviors\TimestampBehavior;
  */
 class Reviews extends \yii\db\ActiveRecord
 {
+    public $verifyCode;
+    
     /**
      * {@inheritdoc}
      */
@@ -56,7 +58,8 @@ class Reviews extends \yii\db\ActiveRecord
             [['name', 'text'], 'filter', 'filter' => function ($value) {
                 return \yii\helpers\HtmlPurifier::process($value);
             }],
-            ['is_active', 'default', 'value' => 0]
+            ['is_active', 'default', 'value' => 0],
+            ['verifyCode', 'captcha']
         ];
     }
 
@@ -72,7 +75,8 @@ class Reviews extends \yii\db\ActiveRecord
             'ip' => 'IP',
             'text' => Yii::t('main', 'Text'),
             'is_active' => Yii::t('app', 'Active'),
-            'created_at' => Yii::t('app', 'Created')
+            'created_at' => Yii::t('app', 'Created'),
+            'verifyCode' => Yii::t('main', 'Verification code')
         ];
     }
 }
