@@ -242,6 +242,7 @@ h1 {
 }
 #footer-menu li > a:hover {
     background: none;
+    color: #43c3ef;
 }
 .no-padding {
     padding: 0;

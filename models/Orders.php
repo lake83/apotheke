@@ -81,7 +81,8 @@ class Orders extends \yii\db\ActiveRecord
             [['email', 'host', 'agent'], 'string', 'max' => 100],
             [['ip', 'language'], 'string', 'max' => 30],
             ['cookie_id', 'string', 'max' => 50],
-            [['products', 'comment'], 'string'],
+            ['comment', 'string'],
+            ['products', 'safe'],
             ['status', 'default', 'value' => self::STATUS_NEW],
             [['name', 'surname', 'street', 'city', 'postcode', 'comment'], 'filter', 'filter' => function ($value) {
                 return \yii\helpers\HtmlPurifier::process($value);
@@ -163,6 +164,8 @@ class Orders extends \yii\db\ActiveRecord
             $this->agent = $request->userAgent;
             $this->cookie_id = $request->cookies['_csrf']->value;
             $this->language = implode(',', $request->acceptableLanguages);
+        } else {
+            $this->products = Json::encode($this->products);
         }
         return parent::beforeSave($insert);
     }

@@ -25,7 +25,7 @@ if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
     <?= $form->field($model, 'text')->textarea(['rows' => 4, 'placeholder' => $model->getAttributeLabel('text')])->label(false) ?>
 
     <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-        'template' => '<div class="row"><div class="col-md-4 col-xs-4">{image}</div><div class="col-md-7 col-xs-7">{input}</div></div>'
+        'template' => '<div class="col-md-5 col-xs-5">{image}</div><div class="col-md-7 col-xs-7">{input}</div><div class="clearfix"></div>'
     ])->label(false) ?>
 
     <?= Html::submitButton(Yii::t('main', 'Send'), ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
