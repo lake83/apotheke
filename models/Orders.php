@@ -32,16 +32,19 @@ use yii\helpers\Json;
  * @property string $agent
  * @property string $cookie_id
  * @property string $language
- * @property int $status 1-new,2-processing,3-closed,4-canceled
+ * @property int $status 1-new,2-аwaiting payment,3-paid,4-item sended,5-order finished,6-problem,7-canceled
  * @property int $created_at
  * @property int $updated_at
  */
 class Orders extends \yii\db\ActiveRecord
 {
     const STATUS_NEW = 1;
-    const STATUS_PROCESSING = 2;
-    const STATUS_CLOSED = 3;
-    const STATUS_CANSELED = 4;
+    const STATUS_AWAITING_PAYMENT = 2;
+    const STATUS_PAID = 3;
+    const STATUS_ITEM_SENDED = 4;
+    const STATUS_ORDER_FINISHED = 5;
+    const STATUS_PROBLEM = 6;
+    const STATUS_CANSELED = 7;
     
     public $coupon;
     
@@ -230,8 +233,11 @@ class Orders extends \yii\db\ActiveRecord
     {
         $array = [
             self::STATUS_NEW => Yii::t('app', 'New'),
-            self::STATUS_PROCESSING => Yii::t('app', 'Processing'),
-            self::STATUS_CLOSED => Yii::t('app', 'Closed'),
+            self::STATUS_AWAITING_PAYMENT => Yii::t('app', 'Awaiting payment'),
+            self::STATUS_PAID => Yii::t('app', 'Paid'),
+            self::STATUS_ITEM_SENDED => Yii::t('app', 'Item sended'),
+            self::STATUS_ORDER_FINISHED => Yii::t('app', 'Order finished'),
+            self::STATUS_PROBLEM => Yii::t('app', 'Problem'),
             self::STATUS_CANSELED => Yii::t('app', 'Canceled')
         ];
         return is_null($key) ? $array : $array[$key];

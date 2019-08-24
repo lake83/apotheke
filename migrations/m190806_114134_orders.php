@@ -33,7 +33,7 @@ class m190806_114134_orders extends Migration
             'agent' => $this->string(100)->notNull(),
             'cookie_id' => $this->string(50)->notNull(),
             'language' => $this->string(30)->notNull(),
-            'status' => $this->integer()->notNull()->defaultValue(1)->comment('1-new,2-processing,3-closed,4-canceled'),
+            'status' => $this->integer()->notNull()->defaultValue(1)->comment('1-new,2-аwaiting payment,3-paid,4-item sended,5-order finished,6-problem,7-canceled'),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull()
         ], $this->db->driverName === 'mysql' ? 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB' : null);
