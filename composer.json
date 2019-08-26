@@ -25,7 +25,6 @@
         "kartik-v/yii2-widget-alert": "*",
         "kartik-v/yii2-widget-growl": "*",
         "xvs32x/tinymce-responsivefilemanager": "^1.0",
-        "wbraganca/yii2-dynamicform": "*",
         "yiisoft/yii2-imagine": "^2.2",
         "kartik-v/yii2-date-range": "dev-master"
     },
