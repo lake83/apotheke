@@ -37,7 +37,7 @@ class LogTraffic extends Behavior
     {
         $request = Yii::$app->request;
         
-        if (!YII_ENV_DEV && !in_array($event->sender->action->id, $this->exept) && $request->absoluteUrl !== $request->referrer) {
+        if (!YII_ENV_DEV && isset($request->cookies['_csrf']) && !in_array($event->sender->action->id, $this->exept) && $request->absoluteUrl !== $request->referrer) {
             $model = new Traffic;
             $model->host = $request->absoluteUrl;
             $model->referrer = $request->referrer;

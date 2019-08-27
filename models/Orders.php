@@ -165,7 +165,7 @@ class Orders extends \yii\db\ActiveRecord
             $this->referrer = $request->referrer;
             $this->ip = $request->userIP;
             $this->agent = $request->userAgent;
-            $this->cookie_id = $request->cookies['_csrf']->value;
+            $this->cookie_id = isset($request->cookies['_csrf']) ? $request->cookies['_csrf']->value : '';
             $this->language = implode(',', $request->acceptableLanguages);
         } else {
             $this->products = Json::encode($this->products);
