@@ -5,4 +5,4 @@
 
 $this->title = 'Create product';
 
-echo $this->render('_form', ['model' => $model, 'models' => $models]) ?>
+echo $this->render('_form', ['model' => $model]) ?>
