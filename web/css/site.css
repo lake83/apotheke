@@ -346,19 +346,25 @@ hr {
     color: #fff;
     font-size: 18px;
 }
+#products-grid .products-grid-item {
+    padding: 0 9px;
+}
 .product-item {
-    border: 1px solid #43c3ef;
+    border: 2px solid #43c3ef;
     margin-bottom: 20px;
     display: block;
     padding: 0 5px 5px 5px;
     text-align: center;
 }
 .product-item:hover {
-    text-decoration: none;
-    border: 1px solid #16587b;
+    border: 2px solid #16587b;
 }
 .product-item:hover .buy-product {
     background: #16587b;
+    text-decoration: none;
+}
+.product-item:focus, .product-item:active {
+    text-decoration: none;
 }
 .product_img {
     display: block;
@@ -494,7 +500,6 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
-
 
 @media screen and (min-width: 768px) and (max-width: 1199px) {
     #main-menu .container {
