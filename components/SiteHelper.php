@@ -62,7 +62,8 @@ class SiteHelper
         $url = false;
         if (!empty($image)) {
             $image = explode('/', $image);
-            $last = end(array_keys($image));
+            $keys = array_keys($image);
+            $last = end($keys);
             $file = end($image);
             unset($image[$last]);
             $dir_path = !empty($image) ? '/' . implode('/', $image) : '';

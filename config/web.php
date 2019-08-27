@@ -102,7 +102,8 @@ $config = [
         'formatter' => [
             'timeZone' => 'Europe/Berlin',
             'decimalSeparator' => ',',
-            'thousandSeparator' => ' '         
+            'thousandSeparator' => ' ',
+            'currencyCode' => 'EUR'        
         ],
         'i18n' => [
             'translations' => [

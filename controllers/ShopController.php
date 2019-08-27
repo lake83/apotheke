@@ -51,8 +51,11 @@ class ShopController extends Controller
             $cart['products'][$id]['id'] = $id;
             $cart['products'][$id]['name'] = $product->name;
             $cart['products'][$id]['price'] = $product->price;
-            $cart['products'][$id]['quantity']++;
-             
+            if (isset($cart['products'][$id]['quantity'])) {
+                $cart['products'][$id]['quantity']++;
+            } else {
+                $cart['products'][$id]['quantity'] = 1;
+            }
             $cart['sum']+= $product->price;
             $cart['quantity']++;
             
