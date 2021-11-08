@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use app\components\SiteHelper;
-use app\models\User;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UserSearch */
